@@ -3,10 +3,15 @@ package controlador;
 import java.util.Scanner;
 import java.util.Collection;
 import modelo.Maquina;
+import modelo.TicketCaja;
+import modelo.TicketMaquina;
 
 public class Casino {
 	
 	private Collection<Maquina> maquinas;
+	private Collection<TicketCaja> ticketsCaja;
+	private Collection<TicketMaquina> ticketsMaquina;
+	
 	public void crearUnaMaquina() {
 		Scanner input = new Scanner(System.in);
 		

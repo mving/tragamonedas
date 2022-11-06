@@ -4,12 +4,14 @@ import java.util.Collection;
 import java.util.Scanner;
 import java.util.Random;
 
+import modelo.TicketMaquina;
+import modelo.TicketCaja;
 
 public class Maquina {
 	//La maquina tiene una coleccion de premios
 	private int numeroCasillas;
 	private float recaudacion;
-	private float recaudacionMinimo;
+	private float recaudacionMinima;
 	private float precioJugada;
 	private float credito;
 	private Collection<Premio> premios;
@@ -20,7 +22,7 @@ public class Maquina {
 	public Maquina(int numeroCasillas, float recaudacion, float recaudacionMinimo, float precioJugada, float credito) {
 		this.numeroCasillas = numeroCasillas;
 		this.recaudacion = recaudacion;
-		this.recaudacionMinimo = recaudacionMinimo;
+		this.recaudacionMinima = recaudacionMinimo;
 		this.precioJugada = precioJugada;
 		this.credito = credito;
 	}
@@ -43,7 +45,7 @@ public class Maquina {
 	}
 	
 	private boolean puedeJugar() {
-		if (this.credito >= this.precioJugada && this.recaudacion >= this.recaudacionMinimo)
+		if (this.credito >= this.precioJugada && this.recaudacion >= this.recaudacionMinima)
 			return true;
 		return false;
 	}
@@ -66,7 +68,7 @@ public class Maquina {
 	}
 	
 	public void agregarCredito(float valor) {
-		
+		this.credito += valor;
 	}
 	
 	private void reducirRecaudacion(float valor) {
@@ -95,6 +97,8 @@ public class Maquina {
 		input.close();
 		Premio premio = new Premio(premioValor, combinacion);
 		premios.add(premio);
+		if (premio.valorPremio() > this.recaudacionMinima)
+			actualizaRecaudacionMinima();
 	}
 	
 	public void eliminarPremio() {
@@ -112,7 +116,14 @@ public class Maquina {
 		}
 		input.close();
 		
-		premios.remove(obtenerPremio(combinacion));
+		Premio p = obtenerPremio(combinacion);
+		
+		float valor = p.valorPremio();
+		
+		premios.remove(p);
+		
+		if (valor == this.recaudacionMinima)
+			actualizaRecaudacionMinima();
 	}
 	
 	private Premio obtenerPremio(String[] combinacion) {
@@ -122,6 +133,25 @@ public class Maquina {
 
 		return null;
 	}
+	
+	private void actualizaRecaudacionMinima() {	//La recaudación minima es el valor del premio mas grande
+		for (Premio p : premios)
+			if (p.valorPremio() > this.recaudacionMinima)
+				this.recaudacionMinima = p.valorPremio();
+	}
+	
+	public TicketCaja generaTicketCaja() {
+		
+		TicketCaja t = new TicketCaja();
+		
+		return null;
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
