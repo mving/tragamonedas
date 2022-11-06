@@ -6,7 +6,7 @@ import modelo.Maquina;
 
 public class Casino {
 	
-	private Collection<Maquina> maquina;
+	private Collection<Maquina> maquinas;
 	public void crearUnaMaquina() {
 		Scanner input = new Scanner(System.in);
 		
@@ -19,8 +19,10 @@ public class Casino {
 		System.out.println("Ingrese el precio por jugada que tendra la maquina");
 		float precioJugada = input.nextFloat();
 		
+		input.close();
+		
 		Maquina maquina = new Maquina(numeroCasillas, recaudacion, 0/*recaudacion minima*/, precioJugada, 0/*credito*/);
-		maquina.add(maquina);
+		maquinas.add(maquina);
 	}
 	
 	public void agregarPremio() {

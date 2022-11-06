@@ -14,10 +14,14 @@ public class Premio {
 		//this.combinacion = combinacion;
 	}
 	
+	public boolean soyEsePremio(String[] combinacion) {
+		return this.combinacion == combinacion;
+	}
 	
 	
-	
-	
+	public float valorPremio() {
+		return this.valor;
+	}
 	
 	
 	
