@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.Scanner;
 import java.util.Random;
 
-import modelo.TicketMaquina;
-import modelo.TicketCaja;
 
 public class Maquina {
 	//La maquina tiene una coleccion de premios
@@ -14,6 +12,7 @@ public class Maquina {
 	private float recaudacionMinima;
 	private float precioJugada;
 	private float credito;
+	private int idMaquina;
 	private Collection<Premio> premios;
 	
 	public final static String[] frutas = {"banana", "frutilla", "guinda", "manzana", "sandia", "uva"};
@@ -147,6 +146,15 @@ public class Maquina {
 		this.credito = 0;
 		return t;
 	}
-		
+	
+	
+	
+	public boolean soyEsaMaquina(int idMaquina) {
+		return this.idMaquina == idMaquina;
+	}
+	
+	public float creditoMaquina() {
+		return this.credito;
+	}
 	
 }

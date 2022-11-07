@@ -11,11 +11,13 @@ public class Premio {
 	public Premio(float valor, String[] combinacion) {
 		this.valor = valor;
 		this.combinacion = Arrays.copyOf(combinacion, 0);
+		//Revisar
 		//this.combinacion = combinacion;
 	}
 	
 	public boolean soyEsePremio(String[] combinacion) {
 		return this.combinacion == combinacion;
+		//revisar esta comparacion de strings
 	}
 	
 	
@@ -33,6 +35,4 @@ public class Premio {
 	
 	
 	
-	//cada fruta tiene un valor numerico, se suma el valor de cada fruta y ese es el valor de la combinacion.
-	//Las combinaciones pueden ocurrir en cualquier posicion.
 }

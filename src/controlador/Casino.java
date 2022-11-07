@@ -1,16 +1,32 @@
 package controlador;
 
 import java.util.Scanner;
+
+
 import java.util.Collection;
 import modelo.Maquina;
+import modelo.Ticket;
 import modelo.TicketCaja;
 import modelo.TicketMaquina;
 
 public class Casino {
 	
 	private Collection<Maquina> maquinas;
-	private Collection<TicketCaja> ticketsCaja;
-	private Collection<TicketMaquina> ticketsMaquina;
+	private Collection<Ticket> tickets;
+	//private Collection<TicketCaja> ticketsCaja;
+	//private Collection<TicketMaquina> ticketsMaquina;
+	
+	private static Casino instancia;
+	
+	private Casino(){ 
+		
+	}
+	
+	public static Casino getInstancia(){
+		if(instancia == null)
+			instancia = new Casino();
+		return instancia;
+	}
 	
 	public void crearUnaMaquina() {
 		Scanner input = new Scanner(System.in);
@@ -43,26 +59,44 @@ public class Casino {
 		
 	}
 	
-	public void cargarCredito() {
+	public void cargarCredito(int idMaquina, int codigos) {
+		//el codigo al test
 		Scanner input = new Scanner(System.in);
 		System.out.println("Ingrese el codigo del ticket");
 		int codigo = input.nextInt();
 		input.close();
 
-		TicketMaquina ticket;
-		for (TicketMaquina t : ticketsMaquina) {
+		Ticket ticket = null;
+		for (Ticket t : tickets) {
 			if (t.soyEseTicket(codigo)) {
 				ticket = t;
 				break;
 			}
 		}
+		//Preguntar que pasa si me devuelve un ticket del tipo Caja
+		Maquina m = obtenerMaquina(codigos);
 		
-	//	maquinas.cargarCredito(ticket.valorTicket());
+		m.agregarCredito(ticket.valorTicket());
 		
 	}
 	
-	public String pedirTicket() {
-		return "codigo";
+	public Maquina obtenerMaquina(int idMaquina) {
+		for (Maquina m : maquinas) {
+			if (m.soyEsaMaquina(idMaquina))
+				return m;
+		}
+		return null;
+	}
+	
+	//Genera el ticket del usuario para retirar su dinero por caja
+	public int pedirTicket(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		
+		TicketCaja t = new TicketCaja(m.creditoMaquina());
+		
+		tickets.add(t);
+		
+		return t.codigoTicket();
 	}
 	
 }

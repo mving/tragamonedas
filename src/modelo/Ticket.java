@@ -1,16 +1,15 @@
 package modelo;
 
-import java.util.Random;
-
 public abstract class Ticket {
 	
 	private int codigo;
 	private float valor;
 	private boolean usado;
 	
+	private int codigoProximoTicket = 1;
+	
 	public Ticket(float valor) {
-		Random rand = new Random();
-		this.codigo = rand.nextInt(9999999);
+		this.codigo = codigoProximoTicket++;
 		this.valor = valor;
 		this.usado = false;
 	}
@@ -29,6 +28,11 @@ public abstract class Ticket {
 	
 	public void usarTicket() {
 		this.usado = true;
+	}
+	
+	public int codigoTicket() {
+		
+		return this.codigo;
 	}
 	
 }
