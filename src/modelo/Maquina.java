@@ -101,7 +101,9 @@ public class Maquina {
 			actualizaRecaudacionMinima();
 	}
 	
-	public void eliminarPremio() {
+	/*Da de baja un premio, y si ese es el de mayor valor
+	debe actualizar el valor de recaudacionMinima*/
+	public void eliminarPremio() {	
 		System.out.println("Modo baja de premio");
 
 		Scanner input = new Scanner(System.in);
@@ -126,7 +128,7 @@ public class Maquina {
 			actualizaRecaudacionMinima();
 	}
 	
-	private Premio obtenerPremio(String[] combinacion) {
+	private Premio obtenerPremio(String[] combinacion) {	//Devuelve el objeto premio que coincide con la combinacion
 		for (Premio p : premios)
 			if (p.soyEsePremio(combinacion))
 				return p;
@@ -140,20 +142,11 @@ public class Maquina {
 				this.recaudacionMinima = p.valorPremio();
 	}
 	
-	public TicketCaja generaTicketCaja() {
-		
-		TicketCaja t = new TicketCaja();
-		
-		return null;
+	public TicketCaja generaTicketCaja() {	//Cuando se entrega el ticket, es por el valor total del credito
+		TicketCaja t = new TicketCaja(this.credito);
+		this.credito = 0;
+		return t;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 }

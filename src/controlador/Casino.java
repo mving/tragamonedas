@@ -44,6 +44,20 @@ public class Casino {
 	}
 	
 	public void cargarCredito() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Ingrese el codigo del ticket");
+		int codigo = input.nextInt();
+		input.close();
+
+		TicketMaquina ticket;
+		for (TicketMaquina t : ticketsMaquina) {
+			if (t.soyEseTicket(codigo)) {
+				ticket = t;
+				break;
+			}
+		}
+		
+	//	maquinas.cargarCredito(ticket.valorTicket());
 		
 	}
 	
