@@ -1,9 +1,8 @@
 package controlador;
 
-import java.util.Scanner;
 
 
-import java.util.Collection;
+import java.util.ArrayList;
 import modelo.Maquina;
 import modelo.Ticket;
 import modelo.TicketCaja;
@@ -11,15 +10,14 @@ import modelo.TicketMaquina;
 
 public class Casino {
 	
-	private Collection<Maquina> maquinas;
-	private Collection<Ticket> tickets;
-	//private Collection<TicketCaja> ticketsCaja;
-	//private Collection<TicketMaquina> ticketsMaquina;
+	private ArrayList<Maquina> maquinas;
+	private ArrayList<Ticket> tickets;
 	
 	private static Casino instancia;
 	
-	private Casino(){ 
-		
+	public Casino(){ 
+		maquinas = new ArrayList<Maquina>();
+		tickets = new ArrayList<Ticket>();
 	}
 	
 	public static Casino getInstancia(){
@@ -28,59 +26,81 @@ public class Casino {
 		return instancia;
 	}
 	
-	public void crearUnaMaquina() {
-		Scanner input = new Scanner(System.in);
-		
-		System.out.println("Ingrese el numero de casillas que tendra la maquina");
-		int numeroCasillas = input.nextInt();
-		
-		System.out.println("Ingrese la recaudacion inicial que tendra la maquina");
-		float recaudacion = input.nextFloat();
-		
-		System.out.println("Ingrese el precio por jugada que tendra la maquina");
-		float precioJugada = input.nextFloat();
-		
-		input.close();
-		
+	public void crearUnaMaquina(int numeroCasillas, float recaudacion, float precioJugada) {
 		Maquina maquina = new Maquina(numeroCasillas, recaudacion, 0/*recaudacion minima*/, precioJugada, 0/*credito*/);
 		maquinas.add(maquina);
 	}
 	
-	public void agregarPremio() {
-		//Tengo que modificar la recaudacion minima
+	public void agregarPremio(int idMaquina, String[] combinacion, float valor) {
 		
-	}
-	
-	public void borrarPremio() {
-		//Tengo que modificar la recaudacion minima
-	}
-	
-	public void jugar() {
+		Maquina m = obtenerMaquina(idMaquina);
 		
-	}
-	
-	public void cargarCredito(int idMaquina, int codigos) {
-		//el codigo al test
-		Scanner input = new Scanner(System.in);
-		System.out.println("Ingrese el codigo del ticket");
-		int codigo = input.nextInt();
+		//String[] combinacion = new String[m.numeroCasillas()];
+		
+		//Scanner input = new Scanner(System.in);
+		//System.out.println("Ingrese el valor que tendra el premio");
+		//float valor = input.nextFloat();
+		
+		System.out.println("Usted debe ingresar " + m.numeroCasillas() + " frutas en el orden deseado");
+		
+		for(int i = 1; i <= m.numeroCasillas() ; i++) {
+			System.out.println("Ingrese la fruta nº" + i);
+			combinacion[i] = input.next();
+		}
+		
 		input.close();
+		
+		m.crearPremio(valor, combinacion);
+		
+	}
+	
+	public void borrarPremio(int idMaquina) {
+		
+		Maquina m = obtenerMaquina(idMaquina);
+		
+		System.out.println("Modo baja de premio");
+
+		Scanner input = new Scanner(System.in);
+		
+		String[] combinacion = new String[m.numeroCasillas()];
+		
+		System.out.println("Usted debe ingresar " + m.numeroCasillas() + " frutas en el orden deseado");
+		
+		for(int i = 1; i <= m.numeroCasillas(); i++) {
+			System.out.println("Ingrese la fruta nº" + i);
+			combinacion[i] = input.next();
+		}
+		input.close();
+		
+		m.eliminarPremio(combinacion);
+		
+	}
+	
+	public void jugar(int idMaquina) {
+		obtenerMaquina(idMaquina).jugar();;
+	}
+	
+	public void cargarCredito(int idMaquina, int codigo) {
 
 		Ticket ticket = null;
 		for (Ticket t : tickets) {
 			if (t.soyEseTicket(codigo)) {
-				ticket = t;
-				break;
+				if (t instanceof TicketMaquina) {
+					ticket = t;
+					break;
+				}
 			}
 		}
 		//Preguntar que pasa si me devuelve un ticket del tipo Caja
-		Maquina m = obtenerMaquina(codigos);
+		Maquina m = obtenerMaquina(codigo);
 		
 		m.agregarCredito(ticket.valorTicket());
 		
+		System.out.println("Credito: " + m.creditoMaquina());
+		
 	}
 	
-	public Maquina obtenerMaquina(int idMaquina) {
+	private Maquina obtenerMaquina(int idMaquina) {
 		for (Maquina m : maquinas) {
 			if (m.soyEsaMaquina(idMaquina))
 				return m;
@@ -89,13 +109,19 @@ public class Casino {
 	}
 	
 	//Genera el ticket del usuario para retirar su dinero por caja
-	public int pedirTicket(int idMaquina) {
+	public int generarTicketCaja(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
 		
 		TicketCaja t = new TicketCaja(m.creditoMaquina());
-		
 		tickets.add(t);
+		return t.codigoTicket();
+	}
+	
+	//Genera el ticket para ser ingresado en una máquina (lo crea el casino)
+	public int generarTicketMaquina(float valor) {
 		
+		TicketMaquina t = new TicketMaquina(valor);
+		tickets.add(t);
 		return t.codigoTicket();
 	}
 	

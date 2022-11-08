@@ -25,7 +25,7 @@ public class Premio {
 		return this.valor;
 	}
 	
-	
+	//premio tiene que verificar que no exista
 	
 	
 	

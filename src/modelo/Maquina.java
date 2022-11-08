@@ -1,7 +1,6 @@
 package modelo;
 
-import java.util.Collection;
-import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -12,8 +11,10 @@ public class Maquina {
 	private float recaudacionMinima;
 	private float precioJugada;
 	private float credito;
-	private int idMaquina;
-	private Collection<Premio> premios;
+	private int idMaquina;	//Donde meto el ID
+	private ArrayList<Premio> premios;
+	
+	private int idProximaMaquina = 1;
 	
 	public final static String[] frutas = {"banana", "frutilla", "guinda", "manzana", "sandia", "uva"};
 	public final static int frutasCant = 6;
@@ -24,6 +25,7 @@ public class Maquina {
 		this.recaudacionMinima = recaudacionMinimo;
 		this.precioJugada = precioJugada;
 		this.credito = credito;
+		this.idMaquina = idProximaMaquina++;
 	}
 	
 	public void jugar() {
@@ -78,23 +80,9 @@ public class Maquina {
 		this.recaudacion += valor;
 	}
 	
-	public void crearPremio() {
-		System.out.println("Modo alta de premio");
-		Scanner input = new Scanner(System.in);
+	public void crearPremio(float valor,String[] combinacion) {
 		
-		String[] combinacion = new String[this.numeroCasillas];
-		
-		System.out.println("Ingrese el valor que tendrá el premio");
-		float premioValor = input.nextFloat();
-		
-		System.out.println("Usted debe ingresar " + this.numeroCasillas + " frutas en el orden deseado");
-		
-		for(int i = 1; i <= this.numeroCasillas; i++) {
-			System.out.println("Ingrese la fruta nº" + i);
-			combinacion[i] = input.next();
-		}
-		input.close();
-		Premio premio = new Premio(premioValor, combinacion);
+		Premio premio = new Premio(valor, combinacion);
 		premios.add(premio);
 		if (premio.valorPremio() > this.recaudacionMinima)
 			actualizaRecaudacionMinima();
@@ -102,20 +90,7 @@ public class Maquina {
 	
 	/*Da de baja un premio, y si ese es el de mayor valor
 	debe actualizar el valor de recaudacionMinima*/
-	public void eliminarPremio() {	
-		System.out.println("Modo baja de premio");
-
-		Scanner input = new Scanner(System.in);
-		
-		String[] combinacion = new String[this.numeroCasillas];
-		
-		System.out.println("Usted debe ingresar " + this.numeroCasillas + " frutas en el orden deseado");
-		
-		for(int i = 1; i <= this.numeroCasillas; i++) {
-			System.out.println("Ingrese la fruta nº" + i);
-			combinacion[i] = input.next();
-		}
-		input.close();
+	public void eliminarPremio(String[] combinacion) {	
 		
 		Premio p = obtenerPremio(combinacion);
 		
@@ -147,7 +122,9 @@ public class Maquina {
 		return t;
 	}
 	
-	
+	public int numeroCasillas() {
+		return this.numeroCasillas;
+	}
 	
 	public boolean soyEsaMaquina(int idMaquina) {
 		return this.idMaquina == idMaquina;
