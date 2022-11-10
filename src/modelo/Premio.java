@@ -1,7 +1,5 @@
 package modelo;
 
-import java.util.Arrays;
-
 public class Premio {
 	
 	private float valor;
@@ -10,14 +8,17 @@ public class Premio {
 	
 	public Premio(float valor, String[] combinacion) {
 		this.valor = valor;
-		this.combinacion = Arrays.copyOf(combinacion, 0);
-		//Revisar
-		//this.combinacion = combinacion;
+		this.combinacion = new String[combinacion.length];
+		for (int i = 0; i < combinacion.length; i++)
+			this.combinacion[i] = combinacion[i];
 	}
 	
 	public boolean soyEsePremio(String[] combinacion) {
-		return this.combinacion == combinacion;
-		//revisar esta comparacion de strings
+		for (int i = 0; i < combinacion.length; i++) {
+			if(!this.combinacion[i].equals(combinacion[i]))
+				return false;
+		}
+		return true;
 	}
 	
 	

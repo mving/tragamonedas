@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 
@@ -11,8 +12,8 @@ public class Maquina {
 	private float recaudacionMinima;
 	private float precioJugada;
 	private float credito;
-	private int idMaquina;	//Donde meto el ID
-	private ArrayList<Premio> premios;
+	private int idMaquina;
+	private Collection<Premio> premios;
 	
 	private int idProximaMaquina = 1;
 	
@@ -20,6 +21,7 @@ public class Maquina {
 	public final static int frutasCant = 6;
 	
 	public Maquina(int numeroCasillas, float recaudacion, float recaudacionMinimo, float precioJugada, float credito) {
+		premios = new ArrayList<Premio>();
 		this.numeroCasillas = numeroCasillas;
 		this.recaudacion = recaudacion;
 		this.recaudacionMinima = recaudacionMinimo;
@@ -28,9 +30,9 @@ public class Maquina {
 		this.idMaquina = idProximaMaquina++;
 	}
 	
-	public void jugar() {
+	public boolean jugar() {
 		if (!puedeJugar())
-			return;
+			return false;
 		
 		String[] jugada = generarCombinacion();
 		Premio p = obtenerPremio(jugada);	
@@ -38,15 +40,18 @@ public class Maquina {
 		if (p != null) {
 			reducirRecaudacion(p.valorPremio());
 			aumentarCredito(p.valorPremio());
+			return true;
 		}else {
 			aumentarRecaudacion(this.precioJugada);
 			reducirCredito(this.precioJugada);
+			return false;
 		}
 			
 	}
 	
-	private boolean puedeJugar() {
-		if (this.credito >= this.precioJugada && this.recaudacion >= this.recaudacionMinima)
+	public boolean puedeJugar() {
+		//comprobar si tengo premio
+		if (this.credito >= this.precioJugada && this.recaudacion >= this.recaudacionMinima && premios.size() > 0)
 			return true;
 		return false;
 	}
@@ -54,9 +59,9 @@ public class Maquina {
 	private String[] generarCombinacion() {
 		String[] jugada = new String[this.numeroCasillas];
 		Random rand = new Random();
-		for (int i=0; i<this.numeroCasillas; i++)
+		for (int i=0; i<this.numeroCasillas; i++) {
 			jugada[i] = Maquina.frutas[rand.nextInt(frutasCant)];
-		
+		}
 		return jugada;
 	}
 
@@ -69,7 +74,12 @@ public class Maquina {
 	}
 	
 	public void agregarCredito(float valor) {
-		this.credito += valor;
+		aumentarCredito(valor);
+		System.out.println("credito: "+ this.credito + "rec minima" + this.recaudacionMinima + "prec jugada" + this.precioJugada + "recaudacion" + this.recaudacion);
+	}
+	
+	public void quitarCredito(float valor) {
+		reducirCredito(valor);
 	}
 	
 	private void reducirRecaudacion(float valor) {
@@ -132,6 +142,10 @@ public class Maquina {
 	
 	public float creditoMaquina() {
 		return this.credito;
+	}
+	
+	public int idMaquina() {
+		return this.idMaquina;
 	}
 	
 }

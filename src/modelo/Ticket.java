@@ -2,20 +2,20 @@ package modelo;
 
 public abstract class Ticket {
 	
-	private int codigo;
+	//arranca M para maquina C para caja
+	
+	private String codigo;
 	private float valor;
 	private boolean usado;
-	
-	private int codigoProximoTicket = 1;
-	
-	public Ticket(float valor) {
-		this.codigo = codigoProximoTicket++;
+		
+	public Ticket(float valor, String codigo) {
+		this.codigo = codigo;
 		this.valor = valor;
 		this.usado = false;
 	}
 	
-	public boolean soyEseTicket(int codigo) {
-		return this.codigo == codigo;
+	public boolean soyEseTicket(String codigo) {
+		return this.codigo.equals(codigo);
 	}
 	
 	public boolean usado() {
@@ -30,7 +30,7 @@ public abstract class Ticket {
 		this.usado = true;
 	}
 	
-	public int codigoTicket() {
+	public String codigoTicket() {
 		
 		return this.codigo;
 	}
