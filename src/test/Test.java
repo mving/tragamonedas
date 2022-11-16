@@ -2,14 +2,22 @@ package test;
 
 import java.util.Scanner;
 
-import controlador.Casino;
+//import controlador.Casino;
+import gui.Ventana;
 
 public class Test {
 
 	public static Scanner input; 
 
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
+		Ventana v1 = new Ventana();
+		
+		v1.setVisible(true);
+		
+		v1.random();
+	}
+		/*
 		input = new Scanner(System.in);
 		Casino c = Casino.getInstancia();
 		
@@ -137,6 +145,7 @@ public class Test {
 		
 		return combinacion;
 	}
+	*/
 	
 }
 

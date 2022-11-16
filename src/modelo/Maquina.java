@@ -3,7 +3,9 @@ package modelo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
+import gui.Ventana;
 
 public class Maquina {
 	//La maquina tiene una coleccion de premios
@@ -147,5 +149,20 @@ public class Maquina {
 	public int idMaquina() {
 		return this.idMaquina;
 	}
+	
+	/*private void animarJugada() {
+		int contador = 0;
+		long finish = System.currentTimeMillis() + 4000;
+		while(System.currentTimeMillis() < finish) {
+			if(contador == 5)
+				contador = 0;
+			else
+				contador++;
+			cambiarFruta(1, frutas[contador]);
+			cambiarFruta(2, frutas[contador]);
+			cambiarFruta(3, frutas[contador]);
+			TimeUnit.MILLISECONDS.sleep(50);
+		}
+	}*/
 	
 }
