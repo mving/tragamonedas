@@ -15,6 +15,7 @@ public class Maquina {
 	private float precioJugada;
 	private float credito;
 	private int idMaquina;
+	private boolean ultima_jugada;
 	private Collection<Premio> premios;
 	
 	private int idProximaMaquina = 1;
@@ -32,6 +33,10 @@ public class Maquina {
 		this.idMaquina = idProximaMaquina++;
 	}
 	
+	public boolean ultima_jugada() {
+		return this.ultima_jugada;
+	}
+	
 	public boolean jugar() {
 		if (!puedeJugar())
 			return false;
@@ -42,13 +47,13 @@ public class Maquina {
 		if (p != null) {
 			reducirRecaudacion(p.valorPremio());
 			aumentarCredito(p.valorPremio());
-			return true;
+			this.ultima_jugada = true;
 		}else {
 			aumentarRecaudacion(this.precioJugada);
 			reducirCredito(this.precioJugada);
-			return false;
+			this.ultima_jugada = false;
 		}
-			
+		return true;
 	}
 	
 	public boolean puedeJugar() {

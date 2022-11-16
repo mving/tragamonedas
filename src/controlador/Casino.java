@@ -17,7 +17,7 @@ public class Casino {
 	
 	private static Casino instancia;
 	
-	public Casino(){ 
+	private Casino(){ 
 		maquinas = new ArrayList<Maquina>();
 		tickets = new ArrayList<Ticket>();
 	}
@@ -43,8 +43,21 @@ public class Casino {
 		m.eliminarPremio(combinacion);		
 	}
 	
+	//agregar estado
 	public boolean jugar(int idMaquina) {
-		return obtenerMaquina(idMaquina).jugar();
+		Maquina m = obtenerMaquina(idMaquina);
+		if(m == null)
+			return false;
+		return m.jugar();
+	}
+	
+	public String ultima_jugada(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		if(m.ultima_jugada())
+			return "Gano";
+		else
+			return "Perdio";
+			
 	}
 	
 	public boolean puedeJugar(int idMaquina) {

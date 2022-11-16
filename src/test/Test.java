@@ -11,11 +11,11 @@ public class Test {
 
 	
 	public static void main(String[] args) throws InterruptedException {
-		Ventana v1 = new Ventana();
+		Ventana v1 = new Ventana(20);
 		
 		v1.setVisible(true);
 		
-		v1.random();
+		v1.random(20);
 	}
 		/*
 		input = new Scanner(System.in);
