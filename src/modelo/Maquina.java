@@ -16,6 +16,7 @@ public class Maquina {
 	private float credito;
 	private int idMaquina;
 	private boolean ultima_jugada;
+	private String[] ultimaCombinacion;
 	private Collection<Premio> premios;
 	
 	private int idProximaMaquina = 1;
@@ -37,12 +38,16 @@ public class Maquina {
 		return this.ultima_jugada;
 	}
 	
+	public String[] ultimaCombinacion() {
+		return this.ultimaCombinacion;
+	}
+	
 	public boolean jugar() {
 		if (!puedeJugar())
 			return false;
 		
-		String[] jugada = generarCombinacion();
-		Premio p = obtenerPremio(jugada);	
+		ultimaCombinacion = generarCombinacion();	//cambie variable local por una global
+		Premio p = obtenerPremio(ultimaCombinacion);	
 		
 		if (p != null) {
 			reducirRecaudacion(p.valorPremio());
@@ -54,6 +59,11 @@ public class Maquina {
 			this.ultima_jugada = false;
 		}
 		return true;
+	}
+	
+	public void imitaJuego() {
+		ultimaCombinacion = generarCombinacion();	//cambie variable local por una global
+		System.out.print(ultimaCombinacion[0] + " / " + ultimaCombinacion[1] + " / " + ultimaCombinacion[2]);
 	}
 	
 	public boolean puedeJugar() {
@@ -154,20 +164,5 @@ public class Maquina {
 	public int idMaquina() {
 		return this.idMaquina;
 	}
-	
-	/*private void animarJugada() {
-		int contador = 0;
-		long finish = System.currentTimeMillis() + 4000;
-		while(System.currentTimeMillis() < finish) {
-			if(contador == 5)
-				contador = 0;
-			else
-				contador++;
-			cambiarFruta(1, frutas[contador]);
-			cambiarFruta(2, frutas[contador]);
-			cambiarFruta(3, frutas[contador]);
-			TimeUnit.MILLISECONDS.sleep(50);
-		}
-	}*/
 	
 }

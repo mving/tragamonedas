@@ -2,7 +2,7 @@ package test;
 
 import java.util.Scanner;
 
-//import controlador.Casino;
+import controlador.Casino;
 import gui.Ventana;
 
 public class Test {
@@ -11,20 +11,16 @@ public class Test {
 
 	
 	public static void main(String[] args) throws InterruptedException {
-		Ventana v1 = new Ventana(20);
-		
+		Ventana v1 = new Ventana(3);
 		v1.setVisible(true);
-		
-		v1.random(20);
-	}
-		/*
+
 		input = new Scanner(System.in);
 		Casino c = Casino.getInstancia();
 		
 		System.out.println("Crear Maquina...");
 		crearMaquina(c);
 		
-		System.out.println("Crear Premio...");
+	/*	System.out.println("Crear Premio...");
 		crearPremio(c);
 		
 		System.out.println("Generar Ticket Maquina...");
@@ -45,13 +41,18 @@ public class Test {
 			else
 				System.out.println("Usted perdio");
 		}
-				
-		System.out.println("Generar Ticket Caja...");
+		*/
+		
+	//	c.imitaJuego(1);
+	//	v1.jugada(3, c, 1);
+		
+		
+	/*	System.out.println("Generar Ticket Caja...");
 		generarTicketCaja(c, idMaquina);
 		
 		System.out.println("Borrar Premio...");
 		borrarPremio(c);
-		
+	*/	
 		input.close();
 	}
 
@@ -86,14 +87,14 @@ public class Test {
 		c.agregarPremio(idMaquina, combinacion, valor);
 	}
 	
-	private static void borrarPremio(Casino c) {
+	/*private static void borrarPremio(Casino c) {
 		int idMaquina = seleccionarMaquina(c);
 		int cantidadCasillas = c.cantidadCasillasMaquina(idMaquina);
 		String[] combinacion = auxPremio(cantidadCasillas);
 		
 		c.borrarPremio(idMaquina, combinacion);
 	}
-	
+	*/
 	private static void cargarCredito(Casino c, int idMaquina) {
 		
 		System.out.println("Ingrese el codigo del ticket Maquina");
@@ -101,13 +102,13 @@ public class Test {
 		
 		c.cargarCredito(idMaquina, codigo);
 	}
-	
+	/*
 	private static void generarTicketCaja(Casino c, int idMaquina) {
 		//int idMaquina = seleccionarMaquina(c);
 		String codigo = c.generarTicketCaja(idMaquina);
 		System.out.println("El codigo de su ticket es: " + codigo);
 	}
-	
+	*/
 	private static void generarTicketMaquina(Casino c) {
 		System.out.println("Indique que valor debe tener el ticketMaquina");
 		float valor = input.nextFloat();
@@ -145,7 +146,7 @@ public class Test {
 		
 		return combinacion;
 	}
-	*/
+
 	
 }
 

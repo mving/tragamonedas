@@ -51,13 +51,23 @@ public class Casino {
 		return m.jugar();
 	}
 	
-	public String ultima_jugada(int idMaquina) {
+	public void imitaJuego(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		m.imitaJuego();
+	}
+	
+	public String ultimaJugada(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
 		if(m.ultima_jugada())
 			return "Gano";
 		else
 			return "Perdio";
 			
+	}
+	
+	public String[] ultimaCombinacion(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		return m.ultimaCombinacion();
 	}
 	
 	public boolean puedeJugar(int idMaquina) {
