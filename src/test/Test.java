@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import controlador.Casino;
 import gui.Ventana;
+import gui.VentanaPrincipal;
 
 public class Test {
 
@@ -11,14 +12,17 @@ public class Test {
 
 	
 	public static void main(String[] args) throws InterruptedException {
-		Ventana v1 = new Ventana(3);
-		v1.setVisible(true);
+		VentanaPrincipal miVentanaPrincipal = new VentanaPrincipal();
+		miVentanaPrincipal.setVisible(true);
 
-		input = new Scanner(System.in);
-		Casino c = Casino.getInstancia();
+		//Ventana v1 = new Ventana(3);
+		//v1.setVisible(true);
+
+		//input = new Scanner(System.in);
+		//Casino c = Casino.getInstancia();
 		
-		System.out.println("Crear Maquina...");
-		crearMaquina(c);
+		//System.out.println("Crear Maquina...");
+		//crearMaquina(c);
 		
 	/*	System.out.println("Crear Premio...");
 		crearPremio(c);
@@ -53,7 +57,7 @@ public class Test {
 		System.out.println("Borrar Premio...");
 		borrarPremio(c);
 	*/	
-		input.close();
+		//input.close();
 	}
 
 	private static boolean jugar(Casino c, int idMaquina) {

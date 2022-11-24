@@ -19,7 +19,7 @@ public class Maquina {
 	private String[] ultimaCombinacion;
 	private Collection<Premio> premios;
 	
-	private int idProximaMaquina = 1;
+	public static int idProximaMaquina = 1;
 	
 	public final static String[] frutas = {"banana", "frutilla", "guinda", "manzana", "sandia", "uva"};
 	public final static int frutasCant = 6;
@@ -33,6 +33,7 @@ public class Maquina {
 		this.credito = credito;
 		this.idMaquina = idProximaMaquina++;
 	}
+	
 	
 	public boolean ultima_jugada() {
 		return this.ultima_jugada;

@@ -3,7 +3,10 @@ package gui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Container;
+import java.awt.GridLayout;
 import java.util.concurrent.TimeUnit;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controlador.Casino;
+
 
 public class Ventana extends JFrame {
 
@@ -24,28 +28,31 @@ public class Ventana extends JFrame {
 	public final static String[] borrar = {"banana", "frutilla", "guinda", "manzana", "sandia", "uva"};
 	
 	public Ventana(int cantidad) throws InterruptedException {
-		//this.setSize(110*cantidad+150, 385);
 		this.setSize(810, 405);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Tragamonedas");
 		this.setResizable(false);
-		
 		Casino c = Casino.getInstancia();
-		ventanaJuego(cantidad,c, 1);
-		
-		
-		
+		ventanaLogin(c);
+		//ventanaJuego(cantidad,c, 1);
+			
 	}
 	
-	/*
-	private void login() {
-		JPanel login = new JPanel();
-		login.setLayout(null);
-		login.setBackground(Color.GRAY);
-		getContentPane().add(login);
+	
+	private void ventanaLogin(Casino c) {
+		Container cnt = this.getContentPane();
+		cnt.setLayout(new GridLayout(1,2));
+		JButton btnMaquinas = new JButton("Elegir Maquina");
+		JButton btnConfigurar = new JButton("Configurar Maquina");
+		cnt.add(btnConfigurar);
+		cnt.add(btnMaquinas);
+		
+		BotonesLogin b = new BotonesLogin(this);
+		btnMaquinas.addActionListener(b);
+		btnConfigurar.addActionListener(b);
 	}
-	*/
+	
 	private void ventanaJuego(int cantidad, Casino c, int idMaquina) throws InterruptedException {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
@@ -80,7 +87,7 @@ public class Ventana extends JFrame {
 		salir.add(btnSalir);
 		panel.add(salir);
 		/////////////////////////////
-		ManejoBotones m = new ManejoBotones(this, c, idMaquina);
+		BotonesMaquina m = new BotonesMaquina(this, c, idMaquina);
 		btnSalir.addActionListener(m);
 		btnJugar.addActionListener(m);
 		
@@ -122,14 +129,37 @@ public class Ventana extends JFrame {
 		this.lblFruta[posicion].setIcon(new ImageIcon(getClass().getResource(fruta + ".png")));
 	}
 	
+	class BotonesLogin implements ActionListener{
+		private JFrame ventana;
+		
+		public BotonesLogin(JFrame ventana) {
+			this.ventana = ventana;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			switch (e.getActionCommand()) {
+			case "Elegir Maquina":
+				JOptionPane.showMessageDialog(ventana, "Elegir Maquina");
+				
+				break;
+			case "Configurar Maquina":
+				JOptionPane.showMessageDialog(ventana, "Configurar Maquina");
+				break;
+			default:
+				break;
+			}
+			
+		}
+		
+	}
 	
 	
-	class ManejoBotones implements ActionListener{
+	class BotonesMaquina implements ActionListener{
 		
 		private JFrame ventana;
 		private Casino c;
 		private int idMaquina;
-		public ManejoBotones(JFrame ventana, Casino c, int idMaquina) {
+		public BotonesMaquina(JFrame ventana, Casino c, int idMaquina) {
 			this.ventana = ventana;
 			this.c = c;
 			this.idMaquina = idMaquina;

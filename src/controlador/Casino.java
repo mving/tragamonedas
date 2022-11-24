@@ -28,6 +28,10 @@ public class Casino {
 		return instancia;
 	}
 	
+	public int cantidadMaquinas() {
+		return Maquina.idProximaMaquina - 1;
+	}
+	
 	public void crearUnaMaquina(int numeroCasillas, float recaudacion, float precioJugada) {
 		Maquina maquina = new Maquina(numeroCasillas, recaudacion, 0/*recaudacion minima*/, precioJugada, 0/*credito*/);
 		maquinas.add(maquina);
