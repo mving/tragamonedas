@@ -36,6 +36,13 @@ public class VentanaMaquinas extends JDialog implements ActionListener {
 		this.c = c;
 		//cantidadMaquinas = 50;
 		
+		
+		
+		iniciarComponentes();
+
+	}
+	
+	private void iniciarComponentes() {
 		contenedor = getContentPane();
 		contenedor.setLayout(null);
 		
@@ -43,11 +50,6 @@ public class VentanaMaquinas extends JDialog implements ActionListener {
 		setSize(225,170);
 		setLocationRelativeTo(null);
 		
-		iniciarComponentes();
-
-	}
-	
-	private void iniciarComponentes() {
 		listado = new String[cantidadMaquinas];
 		for(int i=0; i<cantidadMaquinas; i++) {
 			listado[i] = "Maquina " + (i+1);
