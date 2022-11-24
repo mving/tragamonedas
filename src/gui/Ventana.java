@@ -108,7 +108,7 @@ public class Ventana extends JFrame {
 	
 	public void jugada(int cantidad_frutas, Casino c, int idMaquina) throws InterruptedException {
 		//String resultado = c.ultimaJugada(idMaquina);
-		c.imitaJuego(idMaquina);
+		//c.imitaJuego(idMaquina);
 		String[] combinacion = c.ultimaCombinacion(idMaquina);
 		int contador = 0;
 		for(int i=0;i<cantidad_frutas;i++) {

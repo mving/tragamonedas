@@ -55,10 +55,6 @@ public class Casino {
 		return m.jugar();
 	}
 	
-	public void imitaJuego(int idMaquina) {
-		Maquina m = obtenerMaquina(idMaquina);
-		m.imitaJuego();
-	}
 	
 	public String ultimaJugada(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
@@ -67,6 +63,21 @@ public class Casino {
 		else
 			return "Perdio";
 			
+	}
+	
+	public void modificaCasillasMaquina(int idMaquina, int cantidad) {
+		Maquina m = obtenerMaquina(idMaquina);
+		m.modificaCasillas(cantidad);
+	}
+	
+	public void modificaRecaudacionMaquina(int idMaquina, float valor) {
+		Maquina m = obtenerMaquina(idMaquina);
+		m.modificaRecaudacion(valor);
+	}
+	
+	public void modificaPrecioJugadaMaquina(int idMaquina, float valor) {
+		Maquina m = obtenerMaquina(idMaquina);
+		m.modificaPrecioJugada(valor);
 	}
 	
 	public String[] ultimaCombinacion(int idMaquina) {
@@ -133,5 +144,15 @@ public class Casino {
 	public int cantidadCasillasMaquina(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
 		return m.numeroCasillas();
+	}
+	
+	public float recaudacionMaquina(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		return m.recaudacion();
+	}
+	
+	public float precioJugadaMaquina(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		return m.precioJugada();
 	}
 }

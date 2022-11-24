@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import controlador.Casino;
 import gui.VentanaMaquinas;
@@ -15,17 +16,18 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 2295449245783091238L;
 	private Container contenedor;
-	JButton btnConfigurar, btnJugar;
+	JButton btnConfigurar, btnJugar, btnCrear;
 	JLabel lblTitulo;
 	private Casino c;
 	
 	private VentanaPrincipal miVentanaPrincipal;
 	
 	public VentanaPrincipal() {
+		setResizable(false);
 		iniciarComponentes();
 		c = Casino.getInstancia();
 		setTitle("Tragamonedas");
-		setSize(400,105);
+		setSize(215,180);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -38,28 +40,47 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		contenedor = getContentPane();
 		contenedor.setLayout(null);
 		
+		btnJugar = new JButton();
+		btnJugar.setText("Jugar");
+		btnJugar.setBounds(15, 20, 170, 25);
+		btnJugar.addActionListener(this);
+		
 		btnConfigurar = new JButton();
 		btnConfigurar.setText("Configurar Maquinas");
-		btnConfigurar.setBounds(15, 20, 170, 25);
+		btnConfigurar.setBounds(15, 55, 170, 25);
 		btnConfigurar.addActionListener(this);
-		
-		btnJugar = new JButton();
-		btnJugar.setText("Seleccionar Maquina");
-		btnJugar.setBounds(200, 20, 170, 25);
-		btnJugar.addActionListener(this);
+				
+		btnCrear = new JButton();
+		btnCrear.setText("Crear Maquina");
+		btnCrear.setBounds(15, 90, 170, 25);
+		btnCrear.addActionListener(this);		
 		
 		contenedor.add(btnConfigurar);
 		contenedor.add(btnJugar);
+		contenedor.add(btnCrear);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnConfigurar) {
-			VentanaMaquinas miVentanaMaquinas = new VentanaMaquinas(true, this.c);
-			miVentanaMaquinas.setVisible(true);
+			if(c.cantidadMaquinas() == 0)
+				JOptionPane.showMessageDialog(contenedor, "Primero debe crear alguna maquina");
+			else {
+				VentanaMaquinas miVentanaMaquinas = new VentanaMaquinas(miVentanaPrincipal, true, true, this.c);
+				miVentanaMaquinas.setVisible(true);
+			}
 		}
 		if (e.getSource() == btnJugar) {
-			VentanaMaquinas miVentanaMaquinas = new VentanaMaquinas(false, this.c);
-			miVentanaMaquinas.setVisible(true);
+			if(c.cantidadMaquinas() == 0)
+				JOptionPane.showMessageDialog(contenedor, "Primero debe crear alguna maquina");
+			else {
+				VentanaMaquinas miVentanaMaquinas = new VentanaMaquinas(miVentanaPrincipal, true, false, this.c);
+				miVentanaMaquinas.setVisible(true);
+			}
+		}
+		if (e.getSource() == btnCrear) {
+			c.crearUnaMaquina(3, 1, 10);	//La maquina se crea con valores por default
+			VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, this.c, this.c.cantidadMaquinas());
+			miVentanaConfiguracion.setVisible(true);
 		}
 	}
 	

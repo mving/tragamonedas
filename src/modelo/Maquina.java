@@ -62,9 +62,16 @@ public class Maquina {
 		return true;
 	}
 	
-	public void imitaJuego() {
-		ultimaCombinacion = generarCombinacion();	//cambie variable local por una global
-		System.out.print(ultimaCombinacion[0] + " / " + ultimaCombinacion[1] + " / " + ultimaCombinacion[2]);
+	public void modificaCasillas(int cantidad) {
+		this.numeroCasillas = cantidad;
+	}
+	
+	public void modificaRecaudacion(float valor) {
+		this.recaudacion = valor;
+	}
+	
+	public void modificaPrecioJugada(float valor) {
+		this.precioJugada = valor;
 	}
 	
 	public boolean puedeJugar() {
@@ -154,12 +161,20 @@ public class Maquina {
 		return this.numeroCasillas;
 	}
 	
+	public float recaudacion() {
+		return this.recaudacion;
+	}
+	
 	public boolean soyEsaMaquina(int idMaquina) {
 		return this.idMaquina == idMaquina;
 	}
 	
 	public float creditoMaquina() {
 		return this.credito;
+	}
+	
+	public float precioJugada() {
+		return this.precioJugada;
 	}
 	
 	public int idMaquina() {
