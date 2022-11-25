@@ -141,6 +141,17 @@ public class Casino {
 		return listadoMaquinas;
 	}
 	
+	public String[] listadoPremiosMaquina(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		String[] listado = new String[m.cantidadPremios()];
+		String[][] aux = m.listarPremios();
+		for(int i=0; i<m.cantidadPremios(); i++) {
+			for(int j=0; j<m.numeroCasillas(); j++)
+				listado[i].concat(aux[i][j]);
+		}
+		return listado;
+	}
+	
 	public int cantidadCasillasMaquina(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
 		return m.numeroCasillas();

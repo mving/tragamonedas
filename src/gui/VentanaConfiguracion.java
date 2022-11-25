@@ -21,10 +21,12 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 	private Casino c;
 	private int idMaquina;
 	private Container contenedor;
-	
+	private VentanaPrincipal miVentanaPrincipal;
+
 	public VentanaConfiguracion(VentanaPrincipal miVentanaPrincipal, boolean modal, Casino c, int idMaquina) {
 		super(miVentanaPrincipal, modal);
 		this.c = c;
+		this.miVentanaPrincipal = miVentanaPrincipal;
 		this.idMaquina = idMaquina;
 		setResizable(false);
 		setSize(300,300);
@@ -71,7 +73,8 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==btnPremios) {
-			
+			VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.c, this.idMaquina);
+			miVentanaPremios.setVisible(true);
 		}
 		if (e.getSource()==btnBorrar) {
 					

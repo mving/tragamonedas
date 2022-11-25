@@ -181,4 +181,17 @@ public class Maquina {
 		return this.idMaquina;
 	}
 	
+	public int cantidadPremios() {
+		return premios.size();
+	}
+	
+	public String[][] listarPremios() {
+		String[][] listadoPremios = new String[premios.size()][];
+		int i = 0;
+		for (Premio p : premios) {
+			listadoPremios[i++] = p.combinacion();
+		}
+		return listadoPremios;
+	}
+	
 }

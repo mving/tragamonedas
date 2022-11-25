@@ -21,6 +21,9 @@ public class Premio {
 		return true;
 	}
 	
+	public String[] combinacion() {
+		return this.combinacion;
+	}
 	
 	public float valorPremio() {
 		return this.valor;
