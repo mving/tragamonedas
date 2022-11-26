@@ -16,7 +16,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 2295449245783091238L;
 	private Container contenedor;
-	JButton btnConfigurar, btnJugar, btnCrear;
+	JButton btnConfigurar, btnJugar, btnCrear, btnTicket;
 	JLabel lblTitulo;
 	private Casino c;
 	
@@ -27,7 +27,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		iniciarComponentes();
 		c = Casino.getInstancia();
 		setTitle("Tragamonedas");
-		setSize(215,180);
+		setSize(215,205);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -55,9 +55,16 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		btnCrear.setBounds(15, 90, 170, 25);
 		btnCrear.addActionListener(this);		
 		
+		btnTicket = new JButton();
+		btnTicket.setText("Crear Ticket");
+		btnTicket.setBounds(15, 125, 170, 25);
+		btnTicket.addActionListener(this);		
+		
+		
 		contenedor.add(btnConfigurar);
 		contenedor.add(btnJugar);
 		contenedor.add(btnCrear);
+		contenedor.add(btnTicket);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -78,9 +85,12 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 			}
 		}
 		if (e.getSource() == btnCrear) {
-			c.crearUnaMaquina(3, 1, 10);	//La maquina se crea con valores por default
-			VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, this.c, this.c.cantidadMaquinas());
+			//c.crearUnaMaquina(3, 1, 10);	//La maquina se crea con valores por default
+			VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, this.c, 0, true);
 			miVentanaConfiguracion.setVisible(true);
+		}
+		if (e.getSource() == btnTicket) {
+			///
 		}
 	}
 	

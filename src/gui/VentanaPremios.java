@@ -14,7 +14,6 @@ public class VentanaPremios extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = -3002642616891366182L;
 	private Container contenedor;
-	private int cantidadMaquinas;
 	private JButton btnSalir, btnEliminar, btnPremioCrear;
 	String[] listado;
 	private VentanaPrincipal miVentanaPrincipal;
@@ -28,16 +27,18 @@ public class VentanaPremios extends JDialog implements ActionListener{
 		this.idMaquina = idMaquina;
 		setResizable(false);
 		setTitle("Editor de premios Maquina " + idMaquina);
-		setSize(225,170);
+		setSize(444,444);
 		setLocationRelativeTo(null);
-		
+		iniciarComponentes();
 	}
 	
 	public void iniciarComponentes() {
 		contenedor = getContentPane();
 		contenedor.setLayout(null);
 		
-
+		listado = c.listadoPremiosMaquina(idMaquina);
+		
+		
 		
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox combo = new JComboBox(listado);
@@ -61,16 +62,25 @@ public class VentanaPremios extends JDialog implements ActionListener{
 		btnSalir.setBounds(115, 65, 90, 50);
 		btnSalir.addActionListener(this);
 		
-		contenedor.add(btnAceptar)
+		btnPremioCrear = new JButton("Agregar");
+		btnPremioCrear.setBounds(5, 80, 90, 50);
+		btnPremioCrear.addActionListener(this);
+		
+		contenedor.add(combo);
+		contenedor.add(btnEliminar);
+		contenedor.add(btnSalir);
+		contenedor.add(btnPremioCrear);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource()==btnCancelar) {
+		if (e.getSource()==btnSalir) {
+			System.out.println(listado[0]);
 			dispose();
 		}
 		if (e.getSource()==btnPremioCrear) {
 			VentanaCrearPremio miVentanaCrearPremio = new VentanaCrearPremio(miVentanaPrincipal, true, VentanaPremios.this.c, VentanaPremios.this.idMaquina);
+			miVentanaCrearPremio.setVisible(true);
 		}
 	}
 	//hago una lista desplegable y muestro todos los premios. Y le puedo dar al boton eliminar. tengo el boton crear premio que me arma el dibujo de las frutas

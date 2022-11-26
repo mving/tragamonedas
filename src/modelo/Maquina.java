@@ -34,7 +34,6 @@ public class Maquina {
 		this.idMaquina = idProximaMaquina++;
 	}
 	
-	
 	public boolean ultima_jugada() {
 		return this.ultima_jugada;
 	}
@@ -61,10 +60,7 @@ public class Maquina {
 		}
 		return true;
 	}
-	
-	public void modificaCasillas(int cantidad) {
-		this.numeroCasillas = cantidad;
-	}
+
 	
 	public void modificaRecaudacion(float valor) {
 		this.recaudacion = valor;

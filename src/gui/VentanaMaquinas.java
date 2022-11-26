@@ -22,7 +22,7 @@ public class VentanaMaquinas extends JDialog implements ActionListener {
 	private int cantidadMaquinas;
 	private JButton btnAceptar, btnCancelar;
 	String[] listado;
-	private boolean modoConfiguracion;
+	private boolean modoConfiguracion;	//Si configuro una maquina, o si elijo una maquina para jugar
 	private VentanaPrincipal miVentanaPrincipal;
 	private Casino c;
 	
@@ -34,9 +34,7 @@ public class VentanaMaquinas extends JDialog implements ActionListener {
 		this.cantidadMaquinas = c.cantidadMaquinas();
 		this.modoConfiguracion = modoConfiguracion;
 		this.c = c;
-		//cantidadMaquinas = 50;
-		
-		
+
 		
 		iniciarComponentes();
 
@@ -67,7 +65,7 @@ public class VentanaMaquinas extends JDialog implements ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					if(modoConfiguracion) {	
 						dispose();
-						VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, VentanaMaquinas.this.c, VentanaMaquinas.this.c.cantidadMaquinas());
+						VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, VentanaMaquinas.this.c, VentanaMaquinas.this.c.cantidadMaquinas(), false);
 						miVentanaConfiguracion.setVisible(true);
 						
 					}else {

@@ -29,12 +29,21 @@ public class Casino {
 	}
 	
 	public int cantidadMaquinas() {
-		return Maquina.idProximaMaquina - 1;
+		return maquinas.size();
+	}
+	
+	public int idProximaMaquina() {
+		return Maquina.idProximaMaquina;
 	}
 	
 	public void crearUnaMaquina(int numeroCasillas, float recaudacion, float precioJugada) {
 		Maquina maquina = new Maquina(numeroCasillas, recaudacion, 0/*recaudacion minima*/, precioJugada, 0/*credito*/);
 		maquinas.add(maquina);
+	}
+	
+	public void borrarUnaMaquina(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		maquinas.remove(m);
 	}
 	
 	public void agregarPremio(int idMaquina, String[] combinacion, float valor) {	
@@ -64,10 +73,9 @@ public class Casino {
 			return "Perdio";
 			
 	}
-	
-	public void modificaCasillasMaquina(int idMaquina, int cantidad) {
-		Maquina m = obtenerMaquina(idMaquina);
-		m.modificaCasillas(cantidad);
+
+	public String[] frutasDisponibles() {
+		return Maquina.frutas;
 	}
 	
 	public void modificaRecaudacionMaquina(int idMaquina, float valor) {
@@ -88,12 +96,8 @@ public class Casino {
 	public boolean puedeJugar(int idMaquina) {
 		return obtenerMaquina(idMaquina).puedeJugar();
 	}
-	
-	//instanceof
-	public void cargarCredito(int idMaquina, String codigo) {
-		/*if(codigo.substring(0, 1).equals("M"))
-			return;*/
-			
+
+	public void cargarCredito(int idMaquina, String codigo) {	
 		for (Ticket t : tickets) {
 			if (t.soyEseTicket(codigo)) {
 				Maquina m = obtenerMaquina(idMaquina);
@@ -140,12 +144,12 @@ public class Casino {
 		}
 		return listadoMaquinas;
 	}
-	
-	public String[] listadoPremiosMaquina(int idMaquina) {
+	//TODO ver como mierda hacer esto!!!
+	public String[][] listadoPremiosMaquina(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
-		String[] listado = new String[m.cantidadPremios()];
-		String[][] aux = m.listarPremios();
+		String[][] listado = new String[m.cantidadPremios()][m.numeroCasillas()];
 		for(int i=0; i<m.cantidadPremios(); i++) {
+			listado[i][] = new String();
 			for(int j=0; j<m.numeroCasillas(); j++)
 				listado[i].concat(aux[i][j]);
 		}
