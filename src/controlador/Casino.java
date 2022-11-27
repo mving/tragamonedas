@@ -144,7 +144,9 @@ public class Casino {
 		}
 		return listadoMaquinas;
 	}
-	//TODO ver como mierda hacer esto!!!
+	
+	/*
+	//TODO ver como mierda hacer esto!!! 
 	public String[][] listadoPremiosMaquina(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
 		String[][] listado = new String[m.cantidadPremios()][m.numeroCasillas()];
@@ -154,7 +156,7 @@ public class Casino {
 				listado[i].concat(aux[i][j]);
 		}
 		return listado;
-	}
+	}*/
 	
 	public int cantidadCasillasMaquina(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);

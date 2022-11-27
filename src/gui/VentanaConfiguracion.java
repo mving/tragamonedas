@@ -72,7 +72,7 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		btnBorrar.addActionListener(this);
 		if(modoCreacion)
 			btnBorrar.setEnabled(false);
-		
+	//TODO que los txt solo acepten numeros	
 		contenedor.add(lblNumeroCasillas);
 		contenedor.add(txtNumeroCasillas);
 		contenedor.add(lblRecaudacion);
@@ -97,6 +97,7 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 			c.borrarUnaMaquina(idMaquina);
 		}
 		if (e.getSource()==btnAceptar) {
+			
 			if(Integer.valueOf(txtNumeroCasillas.getText()) < 3 || Integer.valueOf(txtNumeroCasillas.getText()) > 6) {
 				JOptionPane.showMessageDialog(contenedor, "La maquina debe tener entre 3 y 6 frutas");
 			}else if(Float.valueOf(txtRecaudacion.getText()) <= 0 || Float.valueOf(txtPrecioJugada.getText()) <= 0) {
