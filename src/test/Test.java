@@ -2,9 +2,8 @@ package test;
 
 import java.util.Scanner;
 
-import controlador.Casino;
-import gui.Ventana;
 import gui.VentanaPrincipal;
+import gui.Ventana;
 
 public class Test {
 
@@ -12,31 +11,34 @@ public class Test {
 
 	
 	public static void main(String[] args) throws InterruptedException {
-		VentanaPrincipal miVentanaPrincipal = new VentanaPrincipal();
-		miVentanaPrincipal.setVisible(true);
+		
+	//	VentanaPrincipal miVentanaPrincipal = new VentanaPrincipal();
+	//	miVentanaPrincipal.setVisible(true);
 
-		//Ventana v1 = new Ventana(3);
-		//v1.setVisible(true);
+		Ventana v1 = new Ventana(3);
+		v1.setVisible(true);
 
-		//input = new Scanner(System.in);
-		//Casino c = Casino.getInstancia();
+		v1.random(3);
+		v1.random(3);
+	//	input = new Scanner(System.in);
+	//	Casino c = Casino.getInstancia();
 		
-		//System.out.println("Crear Maquina...");
-		//crearMaquina(c);
+	//	System.out.println("Crear Maquina...");
+	//	crearMaquina(c);
 		
-	/*	System.out.println("Crear Premio...");
-		crearPremio(c);
+	//	System.out.println("Crear Premio...");
+	//	crearPremio(c);
 		
-		System.out.println("Generar Ticket Maquina...");
-		generarTicketMaquina(c);
+		//System.out.println("Generar Ticket Maquina...");
+		//generarTicketMaquina(c);
 		
-		System.out.println("¿Donde quiere jugar?");
-		int idMaquina = seleccionarMaquina(c);
+		//System.out.println("¿Donde quiere jugar?");
+		//int idMaquina = seleccionarMaquina(c);
 		
-		System.out.println("Cargar Credito...");
-		cargarCredito(c, idMaquina);
+		//System.out.println("Cargar Credito...");
+		//cargarCredito(c, idMaquina);
 		
-		System.out.println("Jugar...");
+		/*System.out.println("Jugar...");
 		if(!puedeJugar(c, idMaquina))
 			System.out.println("Usted no puede jugar");
 		else {
@@ -50,6 +52,8 @@ public class Test {
 	//	c.imitaJuego(1);
 	//	v1.jugada(3, c, 1);
 		
+	//	String[][] listado = c.listadoPremiosMaquina(1);
+	//	System.out.println(listado[0][0] + listado[0][1] + listado[0][2]);
 		
 	/*	System.out.println("Generar Ticket Caja...");
 		generarTicketCaja(c, idMaquina);
@@ -59,7 +63,7 @@ public class Test {
 	*/	
 		//input.close();
 	}
-
+/*
 	private static boolean jugar(Casino c, int idMaquina) {
 		return c.jugar(idMaquina);
 	}
@@ -90,7 +94,7 @@ public class Test {
 		
 		c.agregarPremio(idMaquina, combinacion, valor);
 	}
-	
+*/	
 	/*private static void borrarPremio(Casino c) {
 		int idMaquina = seleccionarMaquina(c);
 		int cantidadCasillas = c.cantidadCasillasMaquina(idMaquina);
@@ -99,13 +103,15 @@ public class Test {
 		c.borrarPremio(idMaquina, combinacion);
 	}
 	*/
+	
+	/*
 	private static void cargarCredito(Casino c, int idMaquina) {
 		
 		System.out.println("Ingrese el codigo del ticket Maquina");
 		String codigo = input.next();		
 		
 		c.cargarCredito(idMaquina, codigo);
-	}
+	}*/
 	/*
 	private static void generarTicketCaja(Casino c, int idMaquina) {
 		//int idMaquina = seleccionarMaquina(c);
@@ -113,20 +119,20 @@ public class Test {
 		System.out.println("El codigo de su ticket es: " + codigo);
 	}
 	*/
-	private static void generarTicketMaquina(Casino c) {
+/*	private static void generarTicketMaquina(Casino c) {
 		System.out.println("Indique que valor debe tener el ticketMaquina");
 		float valor = input.nextFloat();
 		String codigo = c.generarTicketMaquina(valor);
 		
 		System.out.println("El codigo del ticket es: " + codigo);
 	}
-
-	private static boolean puedeJugar(Casino c, int idMaquina) {
+*/
+/*	private static boolean puedeJugar(Casino c, int idMaquina) {
 		return c.puedeJugar(idMaquina);
-	}
+	}*/
 	//Metodos auxiliares
 	
-	private static int seleccionarMaquina(Casino c) {
+/*	private static int seleccionarMaquina(Casino c) {
 		int[] listadoMaquinas = c.listarMaquinas();
 		System.out.print("Seleccione una maquina");
 		for(int i = 0; i < (listadoMaquinas.length); i++) {
@@ -135,8 +141,8 @@ public class Test {
 		int idMaquina = input.nextInt();
 		return idMaquina;
 	}
-	
-	private static String[] auxPremio(int cantidadCasillas) {
+	*/
+/*	private static String[] auxPremio(int cantidadCasillas) {
 		String[] combinacion = new String[cantidadCasillas];
 		
 		
@@ -151,7 +157,7 @@ public class Test {
 		return combinacion;
 	}
 
-	
+	*/
 }
 
 

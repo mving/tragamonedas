@@ -9,8 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import controlador.Casino;
-import gui.VentanaMaquinas;
-import controlador.Casino;
 
 public class VentanaPrincipal extends JFrame implements ActionListener{
 
@@ -26,7 +24,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		setResizable(false);
 		iniciarComponentes();
 		c = Casino.getInstancia();
-		setTitle("Tragamonedas");
+		setTitle("PTM");
 		setSize(215,205);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,12 +83,17 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 			}
 		}
 		if (e.getSource() == btnCrear) {
-			//c.crearUnaMaquina(3, 1, 10);	//La maquina se crea con valores por default
 			VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, this.c, 0, true);
 			miVentanaConfiguracion.setVisible(true);
 		}
 		if (e.getSource() == btnTicket) {
-			///
+			String respuesta = JOptionPane.showInputDialog("Ingrese el monto del ticket");
+			if (respuesta == null || respuesta == "")
+				JOptionPane.showMessageDialog(contenedor, "No se creó ningún ticket");
+			else {
+				String codigo = c.generarTicketMaquina(Float.valueOf(respuesta));
+				JOptionPane.showMessageDialog(contenedor, "El código del ticket es: ''" + codigo +"'', por un valor de $" + Float.valueOf(respuesta));
+			}
 		}
 	}
 	

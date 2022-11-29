@@ -3,9 +3,6 @@ package modelo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
-import gui.Ventana;
 
 public class Maquina {
 	//La maquina tiene una coleccion de premios
@@ -49,6 +46,8 @@ public class Maquina {
 		ultimaCombinacion = generarCombinacion();	//cambie variable local por una global
 		Premio p = obtenerPremio(ultimaCombinacion);	
 		
+		System.out.println("Jugando:" + ultimaCombinacion[0] + ", " + ultimaCombinacion[1] + ", " + ultimaCombinacion[2]);
+		
 		if (p != null) {
 			reducirRecaudacion(p.valorPremio());
 			aumentarCredito(p.valorPremio());
@@ -61,6 +60,10 @@ public class Maquina {
 		return true;
 	}
 
+	public void imitaJuego() {
+		ultimaCombinacion = generarCombinacion();	//cambie variable local por una global
+		System.out.print(ultimaCombinacion[0] + " / " + ultimaCombinacion[1] + " / " + ultimaCombinacion[2]);
+	}
 	
 	public void modificaRecaudacion(float valor) {
 		this.recaudacion = valor;
@@ -96,7 +99,6 @@ public class Maquina {
 	
 	public void agregarCredito(float valor) {
 		aumentarCredito(valor);
-		System.out.println("credito: "+ this.credito + "rec minima" + this.recaudacionMinima + "prec jugada" + this.precioJugada + "recaudacion" + this.recaudacion);
 	}
 	
 	public void quitarCredito(float valor) {
@@ -133,12 +135,20 @@ public class Maquina {
 			actualizaRecaudacionMinima();
 	}
 	
-	private Premio obtenerPremio(String[] combinacion) {	//Devuelve el objeto premio que coincide con la combinacion
+	public Premio obtenerPremio(String[] combinacion) {	//Devuelve el objeto premio que coincide con la combinacion
 		for (Premio p : premios)
 			if (p.soyEsePremio(combinacion))
 				return p;
 
 		return null;
+	}
+	
+	public float valorPremio(String[] combinacion) {
+		for (Premio p : premios)
+			if (p.soyEsePremio(combinacion))
+				return p.valorPremio();
+
+		return 0;
 	}
 	
 	private void actualizaRecaudacionMinima() {	//La recaudación minima es el valor del premio mas grande

@@ -64,13 +64,17 @@ public class Casino {
 		return m.jugar();
 	}
 	
+	public void imitaJuego(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		m.imitaJuego();
+	}
 	
-	public String ultimaJugada(int idMaquina) {
+	public boolean ultimaJugada(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
 		if(m.ultima_jugada())
-			return "Gano";
+			return true;
 		else
-			return "Perdio";
+			return false;
 			
 	}
 
@@ -97,15 +101,15 @@ public class Casino {
 		return obtenerMaquina(idMaquina).puedeJugar();
 	}
 
-	public void cargarCredito(int idMaquina, String codigo) {	
+	public boolean cargarCredito(int idMaquina, String codigo) {	
 		for (Ticket t : tickets) {
-			if (t.soyEseTicket(codigo)) {
+			if (t.soyEseTicket(codigo) && !t.usado()) {
 				Maquina m = obtenerMaquina(idMaquina);
 				m.agregarCredito(t.valorTicket());
-				break;
+				return true;
 				}
-			
 		}			
+		return false;
 	}
 	
 	private Maquina obtenerMaquina(int idMaquina) {
@@ -145,22 +149,30 @@ public class Casino {
 		return listadoMaquinas;
 	}
 	
-	/*
-	//TODO ver como mierda hacer esto!!! 
+	 
 	public String[][] listadoPremiosMaquina(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
-		String[][] listado = new String[m.cantidadPremios()][m.numeroCasillas()];
-		for(int i=0; i<m.cantidadPremios(); i++) {
-			listado[i][] = new String();
-			for(int j=0; j<m.numeroCasillas(); j++)
-				listado[i].concat(aux[i][j]);
-		}
-		return listado;
-	}*/
+		return m.listarPremios();
+	}
+	
+	public float valorPremioMaquina(int idMaquina, String[] combinacion) {
+		Maquina m = obtenerMaquina(idMaquina);
+		return m.valorPremio(combinacion);
+	}
+	
+	public boolean existePremioMaquina(int idMaquina, String[] combinacion) {
+		Maquina m = obtenerMaquina(idMaquina);
+		return m.obtenerPremio(combinacion) == null ? false : true;
+	}
 	
 	public int cantidadCasillasMaquina(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
 		return m.numeroCasillas();
+	}
+	
+	public int cantidadPremiosMaquina(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		return m.cantidadPremios();
 	}
 	
 	public float recaudacionMaquina(int idMaquina) {

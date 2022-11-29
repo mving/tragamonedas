@@ -1,5 +1,6 @@
 package gui;
 
+//import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,19 +9,19 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import controlador.Casino;
 
 
-
-//repetir lo mismo que crear maquina. Llamo directamente a crear con frutas por default
 public class VentanaCrearPremio extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 4695250599772608146L;
 	private Container contenedor;
 	private int cantidadCasillas, idMaquina;
 	private JButton btnAceptar, btnCancelar;
+	private VentanaPrincipal miVentanaPrincipal;
 	private JLabel lblValor;
 	private JTextField txtValor;
 	private	Casino c;
@@ -29,17 +30,16 @@ public class VentanaCrearPremio extends JDialog implements ActionListener{
 	
 	public VentanaCrearPremio(VentanaPrincipal miVentanaPrincipal, boolean modal, Casino c, int idMaquina) {
 		super(miVentanaPrincipal, modal);
-
+		this.miVentanaPrincipal = miVentanaPrincipal;
 		this.c = c;
 		this.idMaquina = idMaquina;
 		this.cantidadCasillas = c.cantidadCasillasMaquina(idMaquina);
 		iniciarComponentes();
 	}
 	
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	private void iniciarComponentes() {
 		setResizable(false);
-		setSize(300,cantidadCasillas*30+50);
+		setSize(335,cantidadCasillas*30+50);
 		setLocationRelativeTo(null);
 		contenedor = getContentPane();
 		contenedor.setLayout(null);
@@ -47,37 +47,55 @@ public class VentanaCrearPremio extends JDialog implements ActionListener{
 		
 		comboPremios = new JComboBox[cantidadCasillas];
 		for(int i=0; i<cantidadCasillas; i++) {
-			comboPremios[i] = new JComboBox(c.frutasDisponibles());
+			comboPremios[i] = new JComboBox<String>(c.frutasDisponibles());
 			comboPremios[i].setBounds(10, i*25+10, 100, 25);
 			contenedor.add(comboPremios[i]);
 		}
 		
+		lblValor = new JLabel("Valor:");
+		lblValor.setBounds(130, 10, 40, 25);
+		
+		txtValor = new JTextField();
+		txtValor.setBounds(190, 10, 80, 25);
+		
+		
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(this);
-		btnAceptar.setBounds(130, 25, 100, 25);
+		btnAceptar.setBounds(130, (cantidadCasillas-1)*25+10, 85, 25);
+		//btnAceptar.setBackground(Color.GREEN);
+		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
+		btnCancelar.setBounds(225, (cantidadCasillas-1)*25+10, 85, 25);
 
+		
+		contenedor.add(lblValor);
+		contenedor.add(txtValor);
 		contenedor.add(btnAceptar);
 		contenedor.add(btnCancelar);
 		
 
-
-
-	
 	}
 
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==btnAceptar) {
 			String[] combinacion = new String[cantidadCasillas];
 			for (int i = 0; i<cantidadCasillas; i++)
 				combinacion[i] = comboPremios[i].getItemAt(comboPremios[i].getSelectedIndex()).toString();
-			c.agregarPremio(idMaquina, combinacion, 100);
-			dispose();
+			if(c.existePremioMaquina(idMaquina, combinacion))
+				JOptionPane.showMessageDialog(contenedor, "Ese premio ya existe, elige otro");
+			else {
+				c.agregarPremio(idMaquina, combinacion, Float.valueOf(this.txtValor.getText()));
+				dispose();
+				VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.c, this.idMaquina);
+				miVentanaPremios.setVisible(true);
+			}
 		}
 		if (e.getSource()==btnCancelar) {
 			dispose();
+			VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.c, this.idMaquina);
+			miVentanaPremios.setVisible(true);
 		}
 	}
 	

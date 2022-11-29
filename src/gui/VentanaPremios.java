@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import controlador.Casino;
 
@@ -15,10 +16,13 @@ public class VentanaPremios extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -3002642616891366182L;
 	private Container contenedor;
 	private JButton btnSalir, btnEliminar, btnPremioCrear;
-	String[] listado;
+	String[][] listado;
+	String[] listadoPremios;
 	private VentanaPrincipal miVentanaPrincipal;
 	private Casino c;
 	private int idMaquina;
+	@SuppressWarnings("rawtypes")
+	JComboBox combo;
 
 	public VentanaPremios(VentanaPrincipal miVentanaPrincipal, boolean modal, Casino c, int idMaquina) {
 		super(miVentanaPrincipal, modal);
@@ -27,43 +31,44 @@ public class VentanaPremios extends JDialog implements ActionListener{
 		this.idMaquina = idMaquina;
 		setResizable(false);
 		setTitle("Editor de premios Maquina " + idMaquina);
-		setSize(444,444);
+		setSize(65*c.cantidadCasillasMaquina(idMaquina)+95, 170);
 		setLocationRelativeTo(null);
 		iniciarComponentes();
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void iniciarComponentes() {
 		contenedor = getContentPane();
 		contenedor.setLayout(null);
 		
-		listado = c.listadoPremiosMaquina(idMaquina);
-		
-		
-		
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		JComboBox combo = new JComboBox(listado);
-		combo.setBounds(5,0,200,50);
+		listado = c.listadoPremiosMaquina(idMaquina);		
+		listadoPremios = new String[c.cantidadPremiosMaquina(idMaquina)];
+		for(int i=0;i<c.cantidadPremiosMaquina(idMaquina);i++) {
+			listadoPremios[i] = "" + i + ": ";
+			for(int j=0; j<c.cantidadCasillasMaquina(idMaquina);j++) {
+				listadoPremios[i] = listadoPremios[i] + listado[i][j] + ", ";
+			}
+			listadoPremios[i] = listadoPremios[i] + "$" + c.valorPremioMaquina(idMaquina, listado[i]);
+		}
+
+		this.combo = new JComboBox(listadoPremios);
+		combo.setBounds(10,10,65*c.cantidadCasillasMaquina(idMaquina)+60, 25);
 		combo.addActionListener(this);
+		if(c.cantidadPremiosMaquina(idMaquina) == 0)
+			combo.setEnabled(false);
 		
 		btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(5, 65, 90, 50);
-		btnEliminar.addActionListener(
-			new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
-					VentanaJuego miVentanaJuego = new VentanaJuego(VentanaPremios.this.c, Integer.valueOf(combo.getItemAt(combo.getSelectedIndex()).toString().substring(8)));
-						miVentanaJuego.setVisible(true);
-					
-				}
-			}
-			);
+		btnEliminar.setBounds(10, 95, 90, 25);
+		btnEliminar.addActionListener(this);
+		if(c.cantidadPremiosMaquina(idMaquina) == 0)
+			btnEliminar.setEnabled(false);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setBounds(115, 65, 90, 50);
+		btnSalir.setBounds(65*c.cantidadCasillasMaquina(idMaquina)-20, 65, 90, 55);
 		btnSalir.addActionListener(this);
 		
 		btnPremioCrear = new JButton("Agregar");
-		btnPremioCrear.setBounds(5, 80, 90, 50);
+		btnPremioCrear.setBounds(10, 65, 90, 25);
 		btnPremioCrear.addActionListener(this);
 		
 		contenedor.add(combo);
@@ -75,12 +80,22 @@ public class VentanaPremios extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==btnSalir) {
-			System.out.println(listado[0]);
 			dispose();
 		}
 		if (e.getSource()==btnPremioCrear) {
+			dispose();
 			VentanaCrearPremio miVentanaCrearPremio = new VentanaCrearPremio(miVentanaPrincipal, true, VentanaPremios.this.c, VentanaPremios.this.idMaquina);
 			miVentanaCrearPremio.setVisible(true);
+		}
+		if (e.getSource()==btnEliminar) {
+			String[] botones = {"Aceptar", "Cancelar"};
+			int respuesta = JOptionPane.showOptionDialog(contenedor, "¿Confirma eliminar la máquina " + idMaquina + "?", "Eliminar", 0, JOptionPane.QUESTION_MESSAGE, null, botones, "");
+			if(respuesta == 0) {
+				c.borrarPremio(idMaquina, listado[Integer.valueOf(combo.getItemAt(combo.getSelectedIndex()).toString().substring(0,1))]);
+				dispose();
+				VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.c, this.idMaquina);
+				miVentanaPremios.setVisible(true);
+			}
 		}
 	}
 	//hago una lista desplegable y muestro todos los premios. Y le puedo dar al boton eliminar. tengo el boton crear premio que me arma el dibujo de las frutas

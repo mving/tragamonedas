@@ -1,5 +1,7 @@
 package gui;
 
+//TODO no poder abrir dos veces la misma maquina
+
 import controlador.Casino;
 
 import javax.swing.JButton;
@@ -32,7 +34,7 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		this.modoCreacion = modoCreacion;
 		setResizable(false);
 		setSize(300,300);
-		setTitle("Maquina ");
+		setTitle(modoCreacion ? "Creando Maquina" : "Editar Maquina" + idMaquina);
 		setLocationRelativeTo(null); //centra la ventana en la pantalla
 		iniciaComponentes();
 	}
@@ -93,8 +95,12 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 			miVentanaPremios.setVisible(true);
 		}
 		if (e.getSource()==btnBorrar) {
-			//JOptionPane.show
-			c.borrarUnaMaquina(idMaquina);
+			String[] botones = {"Aceptar", "Cancelar"};
+			int respuesta = JOptionPane.showOptionDialog(contenedor, "¿Confirma eliminar la máquina " + idMaquina + "?", "Eliminar", 0, JOptionPane.QUESTION_MESSAGE, null, botones, "");
+			if(respuesta == 0) {
+				c.borrarUnaMaquina(idMaquina);
+				dispose();
+			}
 		}
 		if (e.getSource()==btnAceptar) {
 			
@@ -118,8 +124,6 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		if (e.getSource()==btnCancelar) {
 			dispose();
 		}
-		
-		//TODO agregar eliminar maquina
 	}
 	
 }
