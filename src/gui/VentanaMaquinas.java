@@ -75,18 +75,28 @@ public class VentanaMaquinas extends JDialog implements ActionListener {
 		}
 		
 		if (e.getSource()==btnAceptar) {
+			int idMaquina = Integer.valueOf(combo.getItemAt(combo.getSelectedIndex()).toString().substring(8));
 			if(modoConfiguracion) {	
-				dispose();
-				VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, VentanaMaquinas.this.c, VentanaMaquinas.this.c.cantidadMaquinas(), false);
-				miVentanaConfiguracion.setVisible(true);
-				
+				if(VentanaMaquinas.this.c.estaAbiertaMaquina(idMaquina)) {
+					JOptionPane.showMessageDialog(contenedor, "La máquina ya se encuentra abierta");
+				}else {
+					dispose();
+					VentanaMaquinas.this.c.abrirMaquina(idMaquina);
+					VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, VentanaMaquinas.this.c, VentanaMaquinas.this.c.cantidadMaquinas(), false);
+					miVentanaConfiguracion.setVisible(true);
+				}
 			}else {
-				if(c.cantidadPremiosMaquina(Integer.valueOf(combo.getItemAt(combo.getSelectedIndex()).toString().substring(8))) == 0)
+				if(c.cantidadPremiosMaquina(idMaquina) == 0)
 					JOptionPane.showMessageDialog(contenedor, "La máquina seleccionada no tiene premios");
 				else {
-					dispose();//como hago para no abrir dos veces la misma maquina. Agrego un estado que sea en uso a la maquina, y desactivo el cerrar.
-					VentanaJuego miVentanaJuego = new VentanaJuego(VentanaMaquinas.this.c, Integer.valueOf(combo.getItemAt(combo.getSelectedIndex()).toString().substring(8)));
-					miVentanaJuego.setVisible(true);
+					if(VentanaMaquinas.this.c.estaAbiertaMaquina(idMaquina)) {
+						JOptionPane.showMessageDialog(contenedor, "La máquina ya se encuentra abierta");
+					}else {
+						dispose();
+						VentanaMaquinas.this.c.abrirMaquina(idMaquina);
+						VentanaJuego miVentanaJuego = new VentanaJuego(VentanaMaquinas.this.c, idMaquina);
+						miVentanaJuego.setVisible(true);
+					}
 				}
 			}
 		}

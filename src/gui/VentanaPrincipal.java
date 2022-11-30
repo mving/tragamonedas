@@ -14,7 +14,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 2295449245783091238L;
 	private Container contenedor;
-	JButton btnConfigurar, btnJugar, btnCrear, btnTicket;
+	JButton btnConfigurar, btnJugar, btnCrear, btnTicket, btnPagar;
 	JLabel lblTitulo;
 	private Casino c;
 	
@@ -25,7 +25,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		iniciarComponentes();
 		c = Casino.getInstancia();
 		setTitle("PTM");
-		setSize(215,205);
+		setSize(215,240);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -38,31 +38,31 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		contenedor = getContentPane();
 		contenedor.setLayout(null);
 		
-		btnJugar = new JButton();
-		btnJugar.setText("Jugar");
+		btnJugar = new JButton("Jugar");
 		btnJugar.setBounds(15, 20, 170, 25);
 		btnJugar.addActionListener(this);
 		
-		btnConfigurar = new JButton();
-		btnConfigurar.setText("Configurar Maquinas");
+		btnConfigurar = new JButton("Configurar Maquinas");
 		btnConfigurar.setBounds(15, 55, 170, 25);
 		btnConfigurar.addActionListener(this);
 				
-		btnCrear = new JButton();
-		btnCrear.setText("Crear Maquina");
+		btnCrear = new JButton("Crear Maquina");
 		btnCrear.setBounds(15, 90, 170, 25);
 		btnCrear.addActionListener(this);		
 		
-		btnTicket = new JButton();
-		btnTicket.setText("Crear Ticket");
+		btnTicket = new JButton("Crear Ticket");
 		btnTicket.setBounds(15, 125, 170, 25);
 		btnTicket.addActionListener(this);		
 		
+		btnPagar = new JButton("Pagar");
+		btnPagar.setBounds(15, 160, 170, 25);
+		btnPagar.addActionListener(this);
 		
 		contenedor.add(btnConfigurar);
 		contenedor.add(btnJugar);
 		contenedor.add(btnCrear);
 		contenedor.add(btnTicket);
+		contenedor.add(btnPagar);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -74,18 +74,21 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 				miVentanaMaquinas.setVisible(true);
 			}
 		}
+		
 		if (e.getSource() == btnJugar) {
 			if(c.cantidadMaquinas() == 0)
 				JOptionPane.showMessageDialog(contenedor, "Primero debe crear alguna maquina");
 			else {
-				VentanaMaquinas miVentanaMaquinas = new VentanaMaquinas(miVentanaPrincipal, true, false, this.c);
+				VentanaMaquinas miVentanaMaquinas = new VentanaMaquinas(miVentanaPrincipal, false, false, this.c);
 				miVentanaMaquinas.setVisible(true);
 			}
 		}
+		
 		if (e.getSource() == btnCrear) {
 			VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, this.c, 0, true);
 			miVentanaConfiguracion.setVisible(true);
 		}
+		
 		if (e.getSource() == btnTicket) {
 			String respuesta = JOptionPane.showInputDialog("Ingrese el monto del ticket");
 			if (respuesta == null || respuesta == "")
@@ -93,6 +96,19 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 			else {
 				String codigo = c.generarTicketMaquina(Float.valueOf(respuesta));
 				JOptionPane.showMessageDialog(contenedor, "El código del ticket es: ''" + codigo +"'', por un valor de $" + Float.valueOf(respuesta));
+			}
+		}
+		
+		if (e.getSource() == btnPagar) {
+			String codigo = JOptionPane.showInputDialog("Ingrese el numero de ticket");
+			if (codigo == null || codigo == "")
+				JOptionPane.showMessageDialog(contenedor, "No se ingresó ningún ticket");
+			else {
+				float valor = 0;
+				if((valor = c.retirarTicketCaja(codigo)) != 0)
+					JOptionPane.showMessageDialog(contenedor, "Debe pagarle al cliente $" + valor + " por el ticket ''" + codigo + "''");
+				else
+					JOptionPane.showMessageDialog(contenedor, "El código ''" + codigo + "'' no es válido");
 			}
 		}
 	}

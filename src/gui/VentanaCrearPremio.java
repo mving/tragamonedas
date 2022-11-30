@@ -4,6 +4,8 @@ package gui;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -34,6 +36,7 @@ public class VentanaCrearPremio extends JDialog implements ActionListener{
 		this.c = c;
 		this.idMaquina = idMaquina;
 		this.cantidadCasillas = c.cantidadCasillasMaquina(idMaquina);
+		setTitle("Agregar premios Maquina " + idMaquina);
 		iniciarComponentes();
 	}
 	
@@ -55,14 +58,18 @@ public class VentanaCrearPremio extends JDialog implements ActionListener{
 		lblValor = new JLabel("Valor:");
 		lblValor.setBounds(130, 10, 40, 25);
 		
-		txtValor = new JTextField();
+		txtValor = new JTextField("50");
 		txtValor.setBounds(190, 10, 80, 25);
-		
+		txtValor.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+		        if (!((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') ))
+		        	ke.consume();
+		     }
+		});
 		
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(this);
 		btnAceptar.setBounds(130, (cantidadCasillas-1)*25+10, 85, 25);
-		//btnAceptar.setBackground(Color.GREEN);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);

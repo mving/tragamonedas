@@ -22,16 +22,12 @@ public abstract class Ticket {
 		return this.usado;
 	}
 	
-	public float valorTicket() {
+	public float usarTicket() {
+		this.usado = true;
 		return this.valor;
 	}
 	
-	public void usarTicket() {
-		this.usado = true;
-	}
-	
 	public String codigoTicket() {
-		
 		return this.codigo;
 	}
 	

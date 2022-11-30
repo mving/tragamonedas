@@ -1,11 +1,10 @@
 package gui;
 
-//TODO no poder abrir dos veces la misma maquina
-
 import controlador.Casino;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -14,6 +13,8 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class VentanaConfiguracion extends JDialog implements ActionListener{
 
@@ -33,10 +34,11 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		this.miVentanaPrincipal = miVentanaPrincipal;
 		this.idMaquina = idMaquina;
 		this.modoCreacion = modoCreacion;
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setResizable(false);
 		setSize(300,300);
-		setTitle(modoCreacion ? "Creando Maquina" : "Editar Maquina" + idMaquina);
-		setLocationRelativeTo(null); //centra la ventana en la pantalla
+		setTitle(modoCreacion ? "Creando Maquina" : "Editar Maquina " + idMaquina);
+		setLocationRelativeTo(null);
 		iniciaComponentes();
 	}
 	
@@ -45,22 +47,42 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		contenedor.setLayout(new GridLayout(6,6));
 		
 		lblNumeroCasillas = new JLabel("Numero de casillas: ");
-		txtNumeroCasillas = new JTextField();
+		txtNumeroCasillas = new JTextField("3");
 		if(!modoCreacion) {
 			txtNumeroCasillas.setText(String.valueOf(c.cantidadCasillasMaquina(idMaquina)));
 			txtNumeroCasillas.setEnabled(false);
 		}
 		
+		txtNumeroCasillas.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+	            if (!((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') ))
+	            	ke.consume();
+	         }
+		});
+		
+		
 		lblRecaudacion = new JLabel("Recaudacion total: ");
-		txtRecaudacion = new JTextField();
+		txtRecaudacion = new JTextField("10000");
 		if(!modoCreacion)
 			txtRecaudacion.setText(String.valueOf(c.recaudacionMaquina(idMaquina)));
+		txtRecaudacion.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+	            if (!((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') ))
+	            	ke.consume();
+	         }
+		});
+		
 		
 		lblPrecioJugada = new JLabel("Precio jugada: ");
-		txtPrecioJugada = new JTextField();
+		txtPrecioJugada = new JTextField("25");
 		if(!modoCreacion)
 			txtPrecioJugada.setText(String.valueOf(c.precioJugadaMaquina(idMaquina)));
-
+		txtPrecioJugada.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+	            if (!((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') ))
+	            	ke.consume();
+	         }
+		});
 		
 		btnPremios = new JButton("Editar Premios");
 		btnPremios.addActionListener(this);
@@ -89,8 +111,6 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		contenedor.add(btnAceptar);
 		contenedor.add(btnCancelar);
 	}
-
-
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==btnPremios) {
@@ -125,8 +145,9 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 			
 		}
 		if (e.getSource()==btnCancelar) {
+			if(!modoCreacion)
+				c.cerrarMaquina(idMaquina);
 			dispose();
 		}
 	}
-	
 }

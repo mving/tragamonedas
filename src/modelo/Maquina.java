@@ -12,7 +12,8 @@ public class Maquina {
 	private float precioJugada;
 	private float credito;
 	private int idMaquina;
-	private boolean ultima_jugada;
+	private float ultima_jugada;
+	private boolean open;
 	private String[] ultimaCombinacion;
 	private Collection<Premio> premios;
 	
@@ -31,12 +32,24 @@ public class Maquina {
 		this.idMaquina = idProximaMaquina++;
 	}
 	
-	public boolean ultima_jugada() {
+	public float ultima_jugada() {
 		return this.ultima_jugada;
 	}
 	
 	public String[] ultimaCombinacion() {
 		return this.ultimaCombinacion;
+	}
+	
+	public boolean estaAbierta() {
+		return open;
+	}
+	
+	public void abrir() {
+		this.open = true;
+	}
+	
+	public void cerrar() {
+		this.open = false;
 	}
 	
 	public boolean jugar() {
@@ -46,23 +59,23 @@ public class Maquina {
 		ultimaCombinacion = generarCombinacion();
 		Premio p = obtenerPremio(ultimaCombinacion);	
 		
-		System.out.println("Jugando:" + ultimaCombinacion[0] + ", " + ultimaCombinacion[1] + ", " + ultimaCombinacion[2]);
-		
 		if (p != null) {
 			reducirRecaudacion(p.valorPremio());
-			aumentarCredito(p.valorPremio());
-			this.ultima_jugada = true;
+			if (this.recaudacion < 0) {
+				aumentarCredito(p.valorPremio() + this.recaudacion);
+				this.ultima_jugada = p.valorPremio() + this.recaudacion;
+				this.recaudacion = 0;
+			}else {
+				aumentarCredito(p.valorPremio());
+				this.ultima_jugada = p.valorPremio();
+			}
+			
 		}else {
 			aumentarRecaudacion(this.precioJugada);
 			reducirCredito(this.precioJugada);
-			this.ultima_jugada = false;
+			this.ultima_jugada = 0;
 		}
 		return true;
-	}
-
-	public void imitaJuego() {
-		ultimaCombinacion = generarCombinacion();	//cambie variable local por una global
-		System.out.print(ultimaCombinacion[0] + " / " + ultimaCombinacion[1] + " / " + ultimaCombinacion[2]);
 	}
 	
 	public void modificaRecaudacion(float valor) {
@@ -74,8 +87,7 @@ public class Maquina {
 	}
 	
 	public boolean puedeJugar() {
-		//comprobar si tengo premio
-		if (this.credito >= this.precioJugada && this.recaudacion >= this.recaudacionMinima && premios.size() > 0)
+		if (this.credito >= this.precioJugada && premios.size() > 0)
 			return true;
 		return false;
 	}
@@ -85,7 +97,9 @@ public class Maquina {
 		Random rand = new Random();
 		for (int i=0; i<this.numeroCasillas; i++) {
 			jugada[i] = Maquina.frutas[rand.nextInt(frutasCant)];
+			//jugada[i] = "banana";		//Descomentar para ganar siempre con bananas
 		}
+		
 		return jugada;
 	}
 
@@ -97,8 +111,9 @@ public class Maquina {
 		this.credito += valor;
 	}
 	
-	public void agregarCredito(float valor) {
+	public float agregarCredito(float valor) {
 		aumentarCredito(valor);
+		return valor;
 	}
 	
 	public void quitarCredito(float valor) {
@@ -165,6 +180,10 @@ public class Maquina {
 		TicketCaja t = new TicketCaja(this.credito);
 		this.credito = 0;
 		return t;
+	}
+	
+	public float recaudacionMinima() {
+		return this.recaudacionMinima;
 	}
 	
 	public int numeroCasillas() {

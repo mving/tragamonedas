@@ -61,26 +61,31 @@ public class Casino {
 		m.eliminarPremio(combinacion);		
 	}
 	
-	//agregar estado
+	public boolean estaAbiertaMaquina(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		return m.estaAbierta();
+	}
+	
+	public void abrirMaquina(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		m.abrir();
+	}
+	
+	public void cerrarMaquina(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		m.cerrar();
+	}
+	
 	public boolean jugar(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
 		if(m == null)
 			return false;
 		return m.jugar();
 	}
-	
-	public void imitaJuego(int idMaquina) {
+		
+	public float ultimaJugada(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
-		m.imitaJuego();
-	}
-	
-	public boolean ultimaJugada(int idMaquina) {
-		Maquina m = obtenerMaquina(idMaquina);
-		if(m.ultima_jugada())
-			return true;
-		else
-			return false;
-			
+		return m.ultima_jugada();
 	}
 
 	public String[] frutasDisponibles() {
@@ -106,15 +111,14 @@ public class Casino {
 		return obtenerMaquina(idMaquina).puedeJugar();
 	}
 
-	public boolean cargarCredito(int idMaquina, String codigo) {	
+	public float cargarCredito(int idMaquina, String codigo) {	
 		for (Ticket t : tickets) {
 			if (t.soyEseTicket(codigo) && !t.usado()) {
 				Maquina m = obtenerMaquina(idMaquina);
-				m.agregarCredito(t.valorTicket());
-				return true;
+				return m.agregarCredito(t.usarTicket());
 				}
 		}			
-		return false;
+		return 0;
 	}
 	
 	private Maquina obtenerMaquina(int idMaquina) {
@@ -139,10 +143,16 @@ public class Casino {
 	
 	//Genera el ticket para ser ingresado en una máquina (lo crea el casino)
 	public String generarTicketMaquina(float valor) {
-		
 		TicketMaquina t = new TicketMaquina(valor);
 		tickets.add(t);
 		return t.codigoTicket();
+	}
+	
+	public float retirarTicketCaja(String codigo) {
+		for (Ticket t : tickets)
+			if (t.soyEseTicket(codigo) && !t.usado())
+				return t.usarTicket();			
+		return 0;
 	}
 	
 	public int[] listarMaquinas() {
@@ -178,6 +188,11 @@ public class Casino {
 	public int cantidadPremiosMaquina(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
 		return m.cantidadPremios();
+	}
+	
+	public float recaudacionMinimaMaquina(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		return m.recaudacionMinima();
 	}
 	
 	public float recaudacionMaquina(int idMaquina) {
