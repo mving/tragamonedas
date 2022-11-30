@@ -3,7 +3,6 @@ package test;
 import java.util.Scanner;
 
 import gui.VentanaPrincipal;
-import gui.Ventana;
 
 public class Test {
 
@@ -12,14 +11,14 @@ public class Test {
 	
 	public static void main(String[] args) throws InterruptedException {
 		
-	//	VentanaPrincipal miVentanaPrincipal = new VentanaPrincipal();
-	//	miVentanaPrincipal.setVisible(true);
+		VentanaPrincipal miVentanaPrincipal = new VentanaPrincipal();
+		miVentanaPrincipal.setVisible(true);
 
-		Ventana v1 = new Ventana(3);
-		v1.setVisible(true);
+	//	Ventana v1 = new Ventana(3);
+	//	v1.setVisible(true);
 
-		v1.random(3);
-		v1.random(3);
+	//	v1.random(3);
+	//	v1.random(3);
 	//	input = new Scanner(System.in);
 	//	Casino c = Casino.getInstancia();
 		

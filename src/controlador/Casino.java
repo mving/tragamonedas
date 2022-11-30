@@ -41,6 +41,11 @@ public class Casino {
 		maquinas.add(maquina);
 	}
 	
+	public float consultarCreditoMaquina(int idMaquina) {
+		Maquina m = obtenerMaquina(idMaquina);
+		return m.consultarCredito();
+	}
+	
 	public void borrarUnaMaquina(int idMaquina) {
 		Maquina m = obtenerMaquina(idMaquina);
 		maquinas.remove(m);

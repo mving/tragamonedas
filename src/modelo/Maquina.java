@@ -43,7 +43,7 @@ public class Maquina {
 		if (!puedeJugar())
 			return false;
 		
-		ultimaCombinacion = generarCombinacion();	//cambie variable local por una global
+		ultimaCombinacion = generarCombinacion();
 		Premio p = obtenerPremio(ultimaCombinacion);	
 		
 		System.out.println("Jugando:" + ultimaCombinacion[0] + ", " + ultimaCombinacion[1] + ", " + ultimaCombinacion[2]);
@@ -111,6 +111,10 @@ public class Maquina {
 	
 	private void aumentarRecaudacion(float valor) {
 		this.recaudacion += valor;
+	}
+	
+	public float consultarCredito() {
+		return this.credito;
 	}
 	
 	public void crearPremio(float valor,String[] combinacion) {

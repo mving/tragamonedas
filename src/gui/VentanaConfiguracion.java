@@ -14,6 +14,7 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 public class VentanaConfiguracion extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = -4970688055075112530L;
@@ -89,6 +90,8 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		contenedor.add(btnCancelar);
 	}
 
+
+	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==btnPremios) {
 			VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.c, this.idMaquina);
