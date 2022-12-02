@@ -26,16 +26,14 @@ public class VentanaCrearPremio extends JDialog implements ActionListener{
 	private VentanaPrincipal miVentanaPrincipal;
 	private JLabel lblValor;
 	private JTextField txtValor;
-	private	Casino c;
 	@SuppressWarnings("rawtypes")
 	private JComboBox[] comboPremios;
 	
-	public VentanaCrearPremio(VentanaPrincipal miVentanaPrincipal, boolean modal, Casino c, int idMaquina) {
+	public VentanaCrearPremio(VentanaPrincipal miVentanaPrincipal, boolean modal, int idMaquina) {
 		super(miVentanaPrincipal, modal);
 		this.miVentanaPrincipal = miVentanaPrincipal;
-		this.c = c;
 		this.idMaquina = idMaquina;
-		this.cantidadCasillas = c.cantidadCasillasMaquina(idMaquina);
+		this.cantidadCasillas = Casino.getInstancia().cantidadCasillasMaquina(idMaquina);
 		setTitle("Agregar premios Maquina " + idMaquina);
 		iniciarComponentes();
 	}
@@ -50,7 +48,7 @@ public class VentanaCrearPremio extends JDialog implements ActionListener{
 		
 		comboPremios = new JComboBox[cantidadCasillas];
 		for(int i=0; i<cantidadCasillas; i++) {
-			comboPremios[i] = new JComboBox<String>(c.frutasDisponibles());
+			comboPremios[i] = new JComboBox<String>(Casino.getInstancia().frutasDisponibles());
 			comboPremios[i].setBounds(10, i*25+10, 100, 25);
 			contenedor.add(comboPremios[i]);
 		}
@@ -90,18 +88,18 @@ public class VentanaCrearPremio extends JDialog implements ActionListener{
 			String[] combinacion = new String[cantidadCasillas];
 			for (int i = 0; i<cantidadCasillas; i++)
 				combinacion[i] = comboPremios[i].getItemAt(comboPremios[i].getSelectedIndex()).toString();
-			if(c.existePremioMaquina(idMaquina, combinacion))
+			if(Casino.getInstancia().existePremioMaquina(idMaquina, combinacion))
 				JOptionPane.showMessageDialog(contenedor, "Ese premio ya existe, elige otro");
 			else {
-				c.agregarPremio(idMaquina, combinacion, Float.valueOf(this.txtValor.getText()));
+				Casino.getInstancia().agregarPremio(idMaquina, combinacion, Float.valueOf(this.txtValor.getText()));
 				dispose();
-				VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.c, this.idMaquina);
+				VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.idMaquina);
 				miVentanaPremios.setVisible(true);
 			}
 		}
 		if (e.getSource()==btnCancelar) {
 			dispose();
-			VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.c, this.idMaquina);
+			VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.idMaquina);
 			miVentanaPremios.setVisible(true);
 		}
 	}

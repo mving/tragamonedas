@@ -22,15 +22,13 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 	private JLabel lblNumeroCasillas, lblRecaudacion, lblPrecioJugada;
 	private JTextField txtNumeroCasillas, txtRecaudacion, txtPrecioJugada;
 	private JButton btnPremios, btnBorrar, btnAceptar, btnCancelar;
-	private Casino c;
 	private int idMaquina;
 	private Container contenedor;
 	private VentanaPrincipal miVentanaPrincipal;
 	private boolean modoCreacion;
 
-	public VentanaConfiguracion(VentanaPrincipal miVentanaPrincipal, boolean modal, Casino c, int idMaquina, boolean modoCreacion) {
+	public VentanaConfiguracion(VentanaPrincipal miVentanaPrincipal, boolean modal, int idMaquina, boolean modoCreacion) {
 		super(miVentanaPrincipal, modal);
-		this.c = c;
 		this.miVentanaPrincipal = miVentanaPrincipal;
 		this.idMaquina = idMaquina;
 		this.modoCreacion = modoCreacion;
@@ -49,7 +47,7 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		lblNumeroCasillas = new JLabel("Numero de casillas: ");
 		txtNumeroCasillas = new JTextField("3");
 		if(!modoCreacion) {
-			txtNumeroCasillas.setText(String.valueOf(c.cantidadCasillasMaquina(idMaquina)));
+			txtNumeroCasillas.setText(String.valueOf(Casino.getInstancia().cantidadCasillasMaquina(idMaquina)));
 			txtNumeroCasillas.setEnabled(false);
 		}
 		
@@ -64,7 +62,7 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		lblRecaudacion = new JLabel("Recaudacion total: ");
 		txtRecaudacion = new JTextField("10000");
 		if(!modoCreacion)
-			txtRecaudacion.setText(String.valueOf(c.recaudacionMaquina(idMaquina)));
+			txtRecaudacion.setText(String.valueOf(Casino.getInstancia().recaudacionMaquina(idMaquina)));
 		txtRecaudacion.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent ke) {
 	            if (!((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') ))
@@ -76,7 +74,7 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		lblPrecioJugada = new JLabel("Precio jugada: ");
 		txtPrecioJugada = new JTextField("25");
 		if(!modoCreacion)
-			txtPrecioJugada.setText(String.valueOf(c.precioJugadaMaquina(idMaquina)));
+			txtPrecioJugada.setText(String.valueOf(Casino.getInstancia().precioJugadaMaquina(idMaquina)));
 		txtPrecioJugada.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent ke) {
 	            if (!((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') ))
@@ -114,14 +112,14 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==btnPremios) {
-			VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.c, this.idMaquina);
+			VentanaPremios miVentanaPremios = new VentanaPremios(miVentanaPrincipal, true, this.idMaquina);
 			miVentanaPremios.setVisible(true);
 		}
 		if (e.getSource()==btnBorrar) {
 			String[] botones = {"Aceptar", "Cancelar"};
 			int respuesta = JOptionPane.showOptionDialog(contenedor, "¿Confirma eliminar la máquina " + idMaquina + "?", "Eliminar", 0, JOptionPane.QUESTION_MESSAGE, null, botones, "");
 			if(respuesta == 0) {
-				c.borrarUnaMaquina(idMaquina);
+				Casino.getInstancia().borrarUnaMaquina(idMaquina);
 				dispose();
 			}
 		}
@@ -134,11 +132,12 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 			}else {
 				dispose();
 				if(!modoCreacion) {
-					c.modificaRecaudacionMaquina(idMaquina, Float.valueOf(txtRecaudacion.getText()));
-					c.modificaPrecioJugadaMaquina(idMaquina, Float.valueOf(txtPrecioJugada.getText()));
+					Casino.getInstancia().cerrarMaquina(idMaquina);
+					Casino.getInstancia().modificaRecaudacionMaquina(idMaquina, Float.valueOf(txtRecaudacion.getText()));
+					Casino.getInstancia().modificaPrecioJugadaMaquina(idMaquina, Float.valueOf(txtPrecioJugada.getText()));
 				}else {
-					c.crearUnaMaquina(Integer.valueOf(txtNumeroCasillas.getText()), Float.valueOf(txtRecaudacion.getText()), Float.valueOf(txtPrecioJugada.getText()));
-					VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, this.c, c.idProximaMaquina()-1, false);
+					Casino.getInstancia().crearUnaMaquina(Integer.valueOf(txtNumeroCasillas.getText()), Float.valueOf(txtRecaudacion.getText()), Float.valueOf(txtPrecioJugada.getText()));
+					VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, Casino.getInstancia().idProximaMaquina()-1, false);
 					miVentanaConfiguracion.setVisible(true);
 				}	
 			}
@@ -146,7 +145,7 @@ public class VentanaConfiguracion extends JDialog implements ActionListener{
 		}
 		if (e.getSource()==btnCancelar) {
 			if(!modoCreacion)
-				c.cerrarMaquina(idMaquina);
+				Casino.getInstancia().cerrarMaquina(idMaquina);
 			dispose();
 		}
 	}

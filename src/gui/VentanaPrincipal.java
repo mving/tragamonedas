@@ -16,14 +16,13 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 	private Container contenedor;
 	JButton btnConfigurar, btnJugar, btnCrear, btnTicket, btnPagar;
 	JLabel lblTitulo;
-	private Casino c;
 	
 	private VentanaPrincipal miVentanaPrincipal;
 	
 	public VentanaPrincipal() {
 		setResizable(false);
 		iniciarComponentes();
-		c = Casino.getInstancia();
+		Casino.getInstancia();
 		setTitle("PTM");
 		setSize(215,240);
 		setLocationRelativeTo(null);
@@ -67,25 +66,25 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnConfigurar) {
-			if(c.cantidadMaquinas() == 0)
+			if(Casino.getInstancia().cantidadMaquinas() == 0)
 				JOptionPane.showMessageDialog(contenedor, "Primero debe crear alguna maquina");
 			else {
-				VentanaMaquinas miVentanaMaquinas = new VentanaMaquinas(miVentanaPrincipal, true, true, this.c);
+				VentanaMaquinas miVentanaMaquinas = new VentanaMaquinas(miVentanaPrincipal, true, true);
 				miVentanaMaquinas.setVisible(true);
 			}
 		}
 		
 		if (e.getSource() == btnJugar) {
-			if(c.cantidadMaquinas() == 0)
+			if(Casino.getInstancia().cantidadMaquinas() == 0)
 				JOptionPane.showMessageDialog(contenedor, "Primero debe crear alguna maquina");
 			else {
-				VentanaMaquinas miVentanaMaquinas = new VentanaMaquinas(miVentanaPrincipal, false, false, this.c);
+				VentanaMaquinas miVentanaMaquinas = new VentanaMaquinas(miVentanaPrincipal, false, false);
 				miVentanaMaquinas.setVisible(true);
 			}
 		}
 		
 		if (e.getSource() == btnCrear) {
-			VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, this.c, 0, true);
+			VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, 0, true);
 			miVentanaConfiguracion.setVisible(true);
 		}
 		
@@ -94,7 +93,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 			if (respuesta == null || respuesta == "")
 				JOptionPane.showMessageDialog(contenedor, "No se creó ningún ticket");
 			else {
-				String codigo = c.generarTicketMaquina(Float.valueOf(respuesta));
+				String codigo = Casino.getInstancia().generarTicketMaquina(Float.valueOf(respuesta));
 				JOptionPane.showMessageDialog(contenedor, "El código del ticket es: ''" + codigo +"'', por un valor de $" + Float.valueOf(respuesta));
 			}
 		}
@@ -105,7 +104,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(contenedor, "No se ingresó ningún ticket");
 			else {
 				float valor = 0;
-				if((valor = c.retirarTicketCaja(codigo)) != 0)
+				if((valor = Casino.getInstancia().retirarTicketCaja(codigo)) != 0)
 					JOptionPane.showMessageDialog(contenedor, "Debe pagarle al cliente $" + valor + " por el ticket ''" + codigo + "''");
 				else
 					JOptionPane.showMessageDialog(contenedor, "El código ''" + codigo + "'' no es válido");

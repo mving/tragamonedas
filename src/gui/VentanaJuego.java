@@ -24,22 +24,20 @@ public class VentanaJuego extends JFrame implements ActionListener {
 	private JLabel[] lblFruta;
 	private JLabel lblCasino, lblFondo, lblPrecioJugada;
 	private JButton btnJugar, btnCredito, btnSalir, btnCobrar;
-	private Casino c;
 	private int idMaquina, cantidadCasillas;
 	private final static String[] frutas = {"banana", "frutilla", "guinda", "manzana", "sandia", "uva"};
 	
 	
 	
 	
-	public VentanaJuego(Casino c, int idMaquina){
-		this.c = c;
+	public VentanaJuego(int idMaquina){
 		this.idMaquina = idMaquina;
-		this.cantidadCasillas = c.cantidadCasillasMaquina(idMaquina);
+		this.cantidadCasillas = Casino.getInstancia().cantidadCasillasMaquina(idMaquina);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setLocationRelativeTo(null);
 		setResizable(false);
 		setTitle("Maquina : " + idMaquina);
 		setSize(810, 405);
+		setLocationRelativeTo(null);
 		iniciaComponentes();
 	}
 	
@@ -58,7 +56,7 @@ public class VentanaJuego extends JFrame implements ActionListener {
 		pnlPrecioJugada.setBounds(200, 320, 160, 30);
 		pnlPrecioJugada.setBackground(Color.GREEN);
 		
-		lblPrecioJugada = new JLabel("Precio jugada: $" + c.precioJugadaMaquina(idMaquina));
+		lblPrecioJugada = new JLabel("Precio jugada: $" + Casino.getInstancia().precioJugadaMaquina(idMaquina));
 		pnlPrecioJugada.add(lblPrecioJugada);
 		
 		lblFruta = new JLabel[cantidadCasillas];
@@ -79,7 +77,7 @@ public class VentanaJuego extends JFrame implements ActionListener {
 		btnCobrar.addActionListener(this);
 		
 		
-		btnCredito = new JButton("Credito: " + c.consultarCreditoMaquina(idMaquina));
+		btnCredito = new JButton("Credito: " + Casino.getInstancia().consultarCreditoMaquina(idMaquina));
 		btnCredito.setBounds(645, 35, 145, 25);
 		btnCredito.addActionListener(this);
 		
@@ -103,46 +101,46 @@ public class VentanaJuego extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(contenedor, "No se ingresó ningún ticket");
 			else {
 				float valor = 0;
-				if((valor = c.cargarCredito(idMaquina, codigo)) != 0)
+				if((valor = Casino.getInstancia().cargarCredito(idMaquina, codigo)) != 0)
 					JOptionPane.showMessageDialog(contenedor, "Usted ingresó $" + valor);
 				else
 					JOptionPane.showMessageDialog(contenedor, "El código ''" + codigo + "'' no es válido");
 			}
-			btnCredito.setText("Credito :" + c.consultarCreditoMaquina(idMaquina));
+			btnCredito.setText("Credito :" + Casino.getInstancia().consultarCreditoMaquina(idMaquina));
 		}
 		
 		if(e.getSource() == btnCobrar) {
-			float credito = c.consultarCreditoMaquina(idMaquina);
+			float credito = Casino.getInstancia().consultarCreditoMaquina(idMaquina);
 			if(credito > 0) {
 				String[] botones = {"Aceptar", "Cancelar"};
 				int respuesta = JOptionPane.showOptionDialog(contenedor, "¿Desea retirarse con $" + credito + "?", "Retiro de dinero", 0, JOptionPane.QUESTION_MESSAGE, null, botones, "");
 				if(respuesta == 0) {
-					JOptionPane.showMessageDialog(contenedor, "El código del ticket es: ''" + c.generarTicketCaja(idMaquina) + "'', por un valor de $" + credito);
-					btnCredito.setText("Credito :" + c.consultarCreditoMaquina(idMaquina)); //Podria poner 0, pero así veo que no quede saldo realmente
+					JOptionPane.showMessageDialog(contenedor, "El código del ticket es: ''" + Casino.getInstancia().generarTicketCaja(idMaquina) + "'', por un valor de $" + credito);
+					btnCredito.setText("Credito :" + Casino.getInstancia().consultarCreditoMaquina(idMaquina)); //Podria poner 0, pero así veo que no quede saldo realmente
 				}
 			}else
 				JOptionPane.showMessageDialog(contenedor, "No tiene saldo para retirar");
 		}
 		
 		if(e.getSource() == btnSalir) {
-			float credito = c.consultarCreditoMaquina(idMaquina);
+			float credito = Casino.getInstancia().consultarCreditoMaquina(idMaquina);
 			if(credito > 0) {
 				String[] botones = {"Quedarse", "Salir"};
 				
 				int respuesta = JOptionPane.showOptionDialog(contenedor, "¿Seguro que desea salir? En la máquina quedarán $" + credito ,"Salir", 0, JOptionPane.QUESTION_MESSAGE, null, botones, "");
 				if(respuesta == 1) {
-					c.cerrarMaquina(idMaquina);
+					Casino.getInstancia().cerrarMaquina(idMaquina);
 					dispose();
 				}
 			}else {
-				c.cerrarMaquina(idMaquina);
+				Casino.getInstancia().cerrarMaquina(idMaquina);
 				dispose();
 			}
 		}
 		
 		if(e.getSource() == btnJugar) {
-			if (c.precioJugadaMaquina(idMaquina) > c.consultarCreditoMaquina(idMaquina)) {
-				JOptionPane.showMessageDialog(contenedor, "Usted necesita al menos $" + c.precioJugadaMaquina(idMaquina) + " para poder jugar");
+			if (Casino.getInstancia().precioJugadaMaquina(idMaquina) > Casino.getInstancia().consultarCreditoMaquina(idMaquina)) {
+				JOptionPane.showMessageDialog(contenedor, "Usted necesita al menos $" + Casino.getInstancia().precioJugadaMaquina(idMaquina) + " para poder jugar");
 				return;
 			}
 			
@@ -150,7 +148,7 @@ public class VentanaJuego extends JFrame implements ActionListener {
 			new SwingWorker<Void, Void>() {
 				@Override
 				protected Void doInBackground() throws Exception {	
-					jugada(VentanaJuego.this.cantidadCasillas, c, idMaquina);
+					jugada(VentanaJuego.this.cantidadCasillas, idMaquina);
 
 					
 					btnJugar.setEnabled(true);
@@ -178,14 +176,14 @@ public class VentanaJuego extends JFrame implements ActionListener {
 		this.lblFruta[posicion].setIcon(new ImageIcon(getClass().getResource(fruta + ".png")));
 	}
 
-	private void jugada(int cantidadCasillas, Casino c, int idMaquina) throws Exception{
-		if(c.recaudacionMaquina(idMaquina) == 0) {
+	private void jugada(int cantidadCasillas, int idMaquina) throws Exception{
+		if(Casino.getInstancia().recaudacionMaquina(idMaquina) == 0) {
 			JOptionPane.showMessageDialog(contenedor, "Esta máquina no está disponible. Retire su dinero");
 			return;
 		}
-		c.jugar(idMaquina);
-		float resultado = c.ultimaJugada(idMaquina);
-		String[] combinacion = c.ultimaCombinacion(idMaquina);
+		Casino.getInstancia().jugar(idMaquina);
+		float resultado = Casino.getInstancia().ultimaJugada(idMaquina);
+		String[] combinacion = Casino.getInstancia().ultimaCombinacion(idMaquina);
 		int contador = 0;
 		long pausa, finish;
 		for(int i=0;i<cantidadCasillas;i++) {
@@ -201,13 +199,13 @@ public class VentanaJuego extends JFrame implements ActionListener {
 			cambiarFruta(i, combinacion[i]);
 		}
 		
-		btnCredito.setText("Credito :" + c.consultarCreditoMaquina(idMaquina));
+		btnCredito.setText("Credito :" + Casino.getInstancia().consultarCreditoMaquina(idMaquina));
 		if (resultado == 0)
 			JOptionPane.showMessageDialog(contenedor, "Usted perdió");
 		else
 			JOptionPane.showMessageDialog(contenedor, "Usted ganó $" + resultado);
 		
-		if (c.recaudacionMaquina(idMaquina) < c.recaudacionMinimaMaquina(idMaquina))
+		if (Casino.getInstancia().recaudacionMaquina(idMaquina) < Casino.getInstancia().recaudacionMinimaMaquina(idMaquina))
 			JOptionPane.showMessageDialog(contenedor, "Esta máquina tiene poco dinero. Es posible que su premio no pueda ser cobrado. Continúe jugando bajo su propio riesgo");
 	}
 }

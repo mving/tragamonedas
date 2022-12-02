@@ -20,20 +20,17 @@ public class VentanaMaquinas extends JDialog implements ActionListener {
 	String[] listado;
 	private boolean modoConfiguracion;	//Si configuro una maquina, o si elijo una maquina para jugar
 	private VentanaPrincipal miVentanaPrincipal;
-	private Casino c;
 	@SuppressWarnings("rawtypes")
 	JComboBox combo;
 	
-	public VentanaMaquinas(VentanaPrincipal miVentanaPrincipal, boolean modal, boolean modoConfiguracion, Casino c) {
+	public VentanaMaquinas(VentanaPrincipal miVentanaPrincipal, boolean modal, boolean modoConfiguracion) {
 		super(miVentanaPrincipal, modal);
 		setResizable(false);
 		this.miVentanaPrincipal = miVentanaPrincipal;
 		setTitle(modoConfiguracion ? "Configurar" : "Jugar");
-		this.cantidadMaquinas = c.cantidadMaquinas();
+		this.cantidadMaquinas = Casino.getInstancia().cantidadMaquinas();
 		this.modoConfiguracion = modoConfiguracion;
-		this.c = c;
-		
-		
+				
 		iniciarComponentes();
 
 	}
@@ -47,9 +44,10 @@ public class VentanaMaquinas extends JDialog implements ActionListener {
 		setSize(225,170);
 		setLocationRelativeTo(null);
 		
+		int[] listadoMaquinas = Casino.getInstancia().listarMaquinas();
 		listado = new String[cantidadMaquinas];
 		for(int i=0; i<cantidadMaquinas; i++) {
-			listado[i] = "Maquina " + (i+1);
+			listado[i] = "Maquina " + listadoMaquinas[i];
 		}
 		
 		this.combo = new JComboBox<String>(listado);
@@ -77,24 +75,24 @@ public class VentanaMaquinas extends JDialog implements ActionListener {
 		if (e.getSource()==btnAceptar) {
 			int idMaquina = Integer.valueOf(combo.getItemAt(combo.getSelectedIndex()).toString().substring(8));
 			if(modoConfiguracion) {	
-				if(VentanaMaquinas.this.c.estaAbiertaMaquina(idMaquina)) {
+				if(Casino.getInstancia().estaAbiertaMaquina(idMaquina)) {
 					JOptionPane.showMessageDialog(contenedor, "La máquina ya se encuentra abierta");
 				}else {
 					dispose();
-					VentanaMaquinas.this.c.abrirMaquina(idMaquina);
-					VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, VentanaMaquinas.this.c, VentanaMaquinas.this.c.cantidadMaquinas(), false);
+					Casino.getInstancia().abrirMaquina(idMaquina);
+					VentanaConfiguracion miVentanaConfiguracion = new VentanaConfiguracion(miVentanaPrincipal, true, idMaquina, false);
 					miVentanaConfiguracion.setVisible(true);
 				}
 			}else {
-				if(c.cantidadPremiosMaquina(idMaquina) == 0)
+				if(Casino.getInstancia().cantidadPremiosMaquina(idMaquina) == 0)
 					JOptionPane.showMessageDialog(contenedor, "La máquina seleccionada no tiene premios");
 				else {
-					if(VentanaMaquinas.this.c.estaAbiertaMaquina(idMaquina)) {
+					if(Casino.getInstancia().estaAbiertaMaquina(idMaquina)) {
 						JOptionPane.showMessageDialog(contenedor, "La máquina ya se encuentra abierta");
 					}else {
 						dispose();
-						VentanaMaquinas.this.c.abrirMaquina(idMaquina);
-						VentanaJuego miVentanaJuego = new VentanaJuego(VentanaMaquinas.this.c, idMaquina);
+						Casino.getInstancia().abrirMaquina(idMaquina);
+						VentanaJuego miVentanaJuego = new VentanaJuego(idMaquina);
 						miVentanaJuego.setVisible(true);
 					}
 				}
